@@ -10,6 +10,7 @@ function añadirListener(){
         }else{
             $("#actualizarContainer").hide();
             $("#borrarContainer").hide();
+            $("#verContainer").hide();
 
             $("#crearContainer").show(); 
             mostrado = true;
@@ -25,6 +26,7 @@ function añadirListener(){
         }else{
             $("#crearContainer").hide();
             $("#borrarContainer").hide();
+            $("#verContainer").hide();
 
             $("#actualizarContainer").show(); 
             mostrado = true;
@@ -40,9 +42,25 @@ function añadirListener(){
         }else{
             $("#actualizarContainer").hide();
             $("#crearContainer").hide();
+            $("#verContainer").hide();
 
             $("#borrarContainer").show(); 
             mostrado = true;
+        }
+    });
+
+    var btnVer = document.getElementById("verBoton");
+
+    btnVer.addEventListener("click", function(){
+        if(!mostrado){
+            $("#verContainer").show();
+            mostrado = true;
+        }else{
+            $("#borrarContainer").hide(); 
+            $("#crearContainer").hide(); 
+            $("#actualizarContainer").hide();
+
+            $("#verContainer").show();
         }
     });
 
@@ -78,6 +96,7 @@ function init(){
     $("#crearContainer").hide();
     $("#actualizarContainer").hide();
     $("#borrarContainer").hide();
+    $("#verContainer").hide();
 }
 
 init();
