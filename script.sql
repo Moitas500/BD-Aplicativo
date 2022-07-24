@@ -235,6 +235,7 @@ insert into cargo values('4', 'Entrenador');
 insert into cargo values('5', 'Auxiliar deportivo');
 insert into cargo values('6', 'Docente');
 
+
 /*==============================================================*/
 /* Table: CATEGORIA                                             */
 /*==============================================================*/

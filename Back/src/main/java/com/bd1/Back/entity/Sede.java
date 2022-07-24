@@ -3,12 +3,14 @@ package com.bd1.Back.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "SEDE")
+@Table(name = "Sede")
 public class Sede {
+
     @Id
     @GeneratedValue
     @Column(name = "idSede")
     private String id;
+
     @Column(name = "nombre")
     private String nombre;
 

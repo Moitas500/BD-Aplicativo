@@ -1,5 +1,31 @@
 var mostrado = false;  
 
+function consultarSedes(){
+    var xhttp = new XMLHttpRequest();
+
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+        console.log(JSON.parse(this.responseText));
+        }
+    };
+    
+    xhttp.open("GET", "http://localhost:8081/leerSedes", true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+}
+
+function consultarCargos(){
+    var xhttp = new XMLHttpRequest();
+
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+        console.log(JSON.parse(this.responseText));
+        }
+    };
+    
+    xhttp.open("GET", "http://localhost:8081/leerCargos", true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+}
+
 function añadirListener(){
     var btnCrear = document.getElementById("crearBoton");
 
