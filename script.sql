@@ -228,6 +228,13 @@ create table CARGO (
    constraint PK_CARGO primary key (IDCARGO)
 );
 
+insert into cargo values('1', 'Administrador deportivo');
+insert into cargo values('2', 'Director deportivo');
+insert into cargo values('3', 'Fisioterapeuta');
+insert into cargo values('4', 'Entrenador');
+insert into cargo values('5', 'Auxiliar deportivo');
+insert into cargo values('6', 'Docente');
+
 /*==============================================================*/
 /* Table: CATEGORIA                                             */
 /*==============================================================*/
@@ -647,6 +654,17 @@ create table SEDE (
    NOMBRE               VARCHAR2(30)          not null,
    constraint PK_SEDE primary key (IDSEDE)
 );
+
+insert into SEDE values('1', 'Aduanilla de Paiba');
+insert into SEDE values('2', 'Calle 34');
+insert into SEDE values('3', 'Facultad de ingenieria');
+insert into SEDE values('4', 'Calle 64');
+insert into SEDE values('5', 'Bosa Porvenir');
+insert into SEDE values('6', 'Macarena A');
+insert into SEDE values('7', 'Macarena B');
+insert into SEDE values('8', 'Facultad tecnologica');
+insert into SEDE values('9', 'Vivero');
+insert into SEDE values('10', 'ASAB');
 
 comment on table SEDE is
 'Entidad que identifica una sede de la universidad';
