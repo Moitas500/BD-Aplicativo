@@ -8,10 +8,10 @@ public class Cargo {
 
     @Id
     @GeneratedValue
-    @Column(name = "idCargo")
+    @Column(name = "idCargo", nullable = false, length = 8)
     private String id;
 
-    @Column(name = "tipoCargo")
+    @Column(name = "tipoCargo", nullable = false, length = 30)
     private String tipoCargo;
 
     public Cargo(String id, String tipoCargo){

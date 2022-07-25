@@ -8,10 +8,10 @@ public class Sede {
 
     @Id
     @GeneratedValue
-    @Column(name = "idSede")
+    @Column(name = "idSede", nullable = false, length = 8)
     private String id;
 
-    @Column(name = "nombre")
+    @Column(name = "nombre", nullable = false, length = 30)
     private String nombre;
 
     public Sede(String id, String nombre){
