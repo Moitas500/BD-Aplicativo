@@ -1,4 +1,4 @@
-var mostrado = false;
+var mostrado = true;
 
 function listarPersonal() {
     $.ajax({
@@ -19,7 +19,8 @@ function listarPersonal() {
                         <td>${empleado.idpersona.apellidos}</td>
                         <td>${empleado.idcargo.tipocargo}</td>
                         <td>${empleado.idsede.nombre}</td>
-                        <td>${empleado.jefeidpersonal.idpersona.nombres + " " + empleado.jefeidpersonal.idpersona.apellidos}</td>
+                        <td>${empleado.jefeidpersonal.idpersona.nombres +
+                             " " + empleado.jefeidpersonal.idpersona.apellidos}</td>
                     </tr>
                     `
                 } else {
@@ -66,35 +67,34 @@ function consultarCargos() {
     xhttp.setRequestHeader("Content-type", "application/json");
 }
 
-function consultarPersonas(personas) {
-    var xhttp = new XMLHttpRequest();
-
-    xhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log(JSON.parse(this.responseText));
+function consultarPersonas(idPersona) {
+    var respuesta
+    $.ajax({
+        url: "http://localhost:8081/personal/" + idPersona,
+        type: 'GET',
+        dataType: 'json',
+        success: function (res) {
+            let data = '';
+            console.log(res)
+            respuesta = res
         }
-    };
-
-    xhttp.open("GET", "http://localhost:8081/personas/" + personas, true);
-    xhttp.setRequestHeader("Content-type", "application/json");
-    return xhttp.responseText;
-
+    })
+    return respuesta;
 }
 
-function consultarPersonal(personal) {
-
-    var xhttp = new XMLHttpRequest();
-
-    xhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log(JSON.parse(this.responseText));
+function consultarPersonal(idPersonal) {
+    var respuesta
+    $.ajax({
+        url: "http://localhost:8081/personal/" + idPersonal,
+        type: 'GET',
+        dataType: 'json',
+        success: function (res) {
+            let data = '';
+            console.log(res)
+            respuesta = res
         }
-    };
-
-    xhttp.open("GET", "http://localhost:8081/personal/" + personal, true);
-    xhttp.setRequestHeader("Content-type", "application/json");
-    return xhttp.responseText;
-
+    })
+    return respuesta;
 }
 
 function IngresarPersonas(idPersona, nombre, apellido) {
@@ -113,6 +113,20 @@ function IngresarPersonas(idPersona, nombre, apellido) {
 
 }
 
+function desactivarCampos(){
+    document.getElementById("nombreCrear").disabled = true;
+    document.getElementById("apellidoCrear").disabled = true;
+    document.getElementById("rolCrear").disabled = true;
+    document.getElementById("sedeCrear").disabled = true;
+    document.getElementById("jefeCrear").disabled = true;
+
+    document.getElementById("nombreActualizar").disabled = true;
+    document.getElementById("apellidoActualizar").disabled = true;
+    document.getElementById("rolActualizar").disabled = true;
+    document.getElementById("sedeActualizar").disabled = true;
+    document.getElementById("jefeActualizar").disabled = true;
+}
+
 function añadirListener() {
     var btnCrear = document.getElementById("crearBoton");
 
@@ -127,6 +141,7 @@ function añadirListener() {
             $("#crearContainer").show();
             mostrado = true;
         }
+        desactivarCampos();
     });
 
     var btnEditar = document.getElementById("editarBoton");
@@ -142,6 +157,7 @@ function añadirListener() {
             $("#actualizarContainer").show();
             mostrado = true;
         }
+        desactivarCampos();
     });
 
     var btnVer = document.getElementById("verBoton");
@@ -158,13 +174,14 @@ function añadirListener() {
         }
         listarPersonal();
     });
+
     var idbtn = document.getElementById("IDBoton");
 
     idbtn.addEventListener("click", function () {
         var idPersona = document.getElementById("IDpersona");
         var idPersonal = document.getElementById("IDempleado");
-        var response = consultarPersonas(idPersona);
-        var response2 = consultarPersonal(idPersonal);
+        var response = consultarPersonas(idPersona.value);
+        var response2 = consultarPersonal(idPersonal.value);
         console.log(response);
         if (response == "" && response2 == "") {
             document.getElementById("nombreCrear").disabled = false;
@@ -174,6 +191,24 @@ function añadirListener() {
         }
     }
     )
+
+    var idactuzalizarbtn = document.getElementById("IDBotonActualizar");
+
+    idactuzalizarbtn.addEventListener("click", function () {
+        var idPersona = document.getElementById("IDpersonaActualizar");
+        var idPersonal = document.getElementById("IDempleadoActualizar");
+        var response = consultarPersonas(idPersona.value);
+        var response2 = consultarPersonal(idPersonal.value);
+        console.log(response, response2);
+        if (response == "" && response2 == "") {
+            document.getElementById("nombreActualizar").disabled = false;
+            document.getElementById("apellidoActualizar").disabled = false;
+            document.getElementById("rolActualizar").disabled = false;
+            document.getElementById("sedeActualizar").disabled = false;
+        }
+    }
+    )
+
     var btnEnviarCrear = document.getElementById("enviarCrear");
 
     btnEnviarCrear.addEventListener("click", function () {

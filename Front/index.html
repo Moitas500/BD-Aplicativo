@@ -104,6 +104,16 @@
             <h4>Actualizar empleado</h4>
         </div>
         <form id = "actualizarForm">
+          <div class="mb-3">
+            <label for="nombre" class="form-label">ID persona</label>
+            <input type="text" class="form-control" id="IDpersonaActualizar" placeholder="Digite el id de la persona" required>
+            
+          </div>
+          <div class="mb-3">
+            <label for="nombre" class="form-label">ID empleado</label>
+            <input type="text" class="form-control" id="IDempleadoActualizar" placeholder="Digite el id del empleado" required >
+          </div>
+          <button type="button" id="IDBotonActualizar" class="btn btn-outline-primary">buscar personal</button>
 
             <div class="mb-3">
               <label for="nombre" class="form-label">Nombre empleado</label>
@@ -169,24 +179,6 @@
               </tr>
             </thead>
             <tbody id="datosEmpleados">
-              <tr>
-                <th scope="row">1</th>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>@mdo</td>
-              </tr>
-              <tr>
-                <th scope="row">2</th>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>@fat</td>
-              </tr>
-              <tr>
-                <th scope="row">3</th>
-                <td>Larry</td>
-                <td>the Bird</td>
-                <td>@twitter</td>
-              </tr>
             </tbody>
           </table>
         </div>
