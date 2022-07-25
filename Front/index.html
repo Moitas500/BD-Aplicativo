@@ -26,9 +26,6 @@
                     <button type="button" id="editarBoton" class="btn btn-outline-primary">Actualizar</button>
                 </li>
                 <li class="nav-item">
-                    <button type="button" id="borrarBoton" class="btn btn-outline-primary">Borrar</button>
-                </li>
-                <li class="nav-item">
                     <button type="button" id="verBoton" class="btn btn-outline-primary">Ver</button>
                 </li>
             </ul>
@@ -157,34 +154,41 @@
           </form>
         </div>
 
-      <div id = "borrarContainer" class="container">
-        <div>
-            <h4>Borrar empleado</h4>
-        </div>
-        <form id = "borrarForm">
-
-            <div class="mb-3">
-              <label for="nombre" class="form-label">Nombre empleado</label>
-              <input type="text" class="form-control" id="nombreBorrar" placeholder="Digite el nombre del empleado" required>
-            </div>
-
-            <div class="mb-3">
-                <label for="apellido" class="form-label">Apellidos empleado</label>
-                <input type="text" class="form-control" id="apellidoBorrar" placeholder="Digite los apellidos del empleado" required>
-            </div>
-
-            <div class="mb-3">
-                <label for="IDBorrar" class="form-label">ID empleado</label>
-                <input type="text" class="form-control" id="IDBorrar" placeholder="Digite el id del empleado" required>
-            </div>
-
-            <button type="submit" class="btn btn-primary" id = "enviarBorrar">Enviar</button>
-          </form>
-      </div>
-
       <div id = "verContainer" class="container">
         <div class="card">
-
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Id empleado</th>
+                <th scope="col">Nombres</th>
+                <th scope="col">Apellidos</th>
+                <th scope="col">Cargo</th>
+                <th scope="col">Sede</th>
+                <th scope="col">Jefe</th>
+              </tr>
+            </thead>
+            <tbody id="datosEmpleados">
+              <tr>
+                <th scope="row">1</th>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+              </tr>
+              <tr>
+                <th scope="row">2</th>
+                <td>Jacob</td>
+                <td>Thornton</td>
+                <td>@fat</td>
+              </tr>
+              <tr>
+                <th scope="row">3</th>
+                <td>Larry</td>
+                <td>the Bird</td>
+                <td>@twitter</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
 
