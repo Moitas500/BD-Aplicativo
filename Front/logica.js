@@ -25,6 +25,35 @@ function consultarCargos(){
     xhttp.open("GET", "http://localhost:8081/leerCargos", true);
     xhttp.setRequestHeader("Content-type", "application/json");
 }
+function consultarPersonas(personas){
+    var xhttp = new XMLHttpRequest();
+
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+        console.log(JSON.parse(this.responseText));
+        }
+    };
+    
+    xhttp.open("GET", "http://localhost:8081/personas/"+personas, true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    return xhttp.responseText;
+   
+}
+function consultarPersonal(personal){
+    
+    var xhttp = new XMLHttpRequest();
+
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+        console.log(JSON.parse(this.responseText));
+        }
+    };
+    
+    xhttp.open("GET", "http://localhost:8081/personal/"+personal, true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    return xhttp.responseText;
+   
+}
 
 function añadirListener(){
     var btnCrear = document.getElementById("crearBoton");
@@ -89,12 +118,30 @@ function añadirListener(){
             $("#verContainer").show();
         }
     });
+    var idbtn= document.getElementById("IDBoton");
 
+    idbtn.addEventListener("click", function(){
+        var idPersona= document.getElementById("IDpersona");
+        var idPersonal= document.getElementById("IDempleado");
+        var response= consultarPersonas(idPersona);
+        var response2= consultarPersonal(idPersonal);
+        console.log(response); 
+        if(response=="" && response2==""){
+            document.getElementById("nombreCrear").disabled = false;
+            document.getElementById("apellidoCrear").disabled = false;
+            document.getElementById("rolCrear").disabled = false;
+            document.getElementById("sedeCrear").disabled = false;
+        }  
+    }
+    )
     var btnEnviarCrear = document.getElementById("enviarCrear");
 
     btnEnviarCrear.addEventListener("click", function(){
+
+        var idPersona=document.getElementById("");
         var rol = document.getElementById("rolCrear");
         var sede = document.getElementById("sedeCrear");
+        
 
         if(rol.value == "0" || sede.value == "0"){
             alert("Seleccione un rol y sede para el empleado para poder continuar");

@@ -41,20 +41,30 @@
             <h4>Crear empleado</h4>
         </div>
         <form id = "crearForm">
-
+           
+            <div class="mb-3">
+                <label for="nombre" class="form-label">ID persona</label>
+                <input type="text" class="form-control" id="IDpersona" placeholder="Digite el id de la persona" required>
+                
+              </div>
+              <div class="mb-3">
+                <label for="nombre" class="form-label">ID empleado</label>
+                <input type="text" class="form-control" id="IDempleado" placeholder="Digite el id del empleado" required >
+              </div>
+              <button type="button" id="IDBoton" class="btn btn-outline-primary">buscar personal</button>
             <div class="mb-3">
               <label for="nombre" class="form-label">Nombre empleado</label>
-              <input type="text" class="form-control" id="nombreCrear" placeholder="Digite el nombre del empleado" required>
+              <input type="text" class="form-control" id="nombreCrear" placeholder="Digite el nombre del empleado" required disabled>
             </div>
 
             <div class="mb-3">
                 <label for="apellido" class="form-label">Apellidos empleado</label>
-                <input type="text" class="form-control" id="apellidoCrear" placeholder="Digite los apellidos del empleado" required>
+                <input type="text" class="form-control" id="apellidoCrear" placeholder="Digite los apellidos del empleado" required disabled>
             </div>
 
             <div class="mb-3">
                 <label for="rol" class="form-label">Rol</label>
-                <select class="form-select" aria-label="Default select example" id = "rolCrear" required>
+                <select class="form-select" aria-label="Default select example" id = "rolCrear" required disabled>
                     <option selected disabled value="0">Elija el rol del empleado</option>
                     <option value="1">Administrador deportivo</option>
                     <option value="2">Director deportivo</option>
@@ -67,7 +77,7 @@
 
             <div class="mb-3">
                 <label for="sede" class="form-label">Sede</label>
-                <select class="form-select" aria-label="Default select example" id = "sedeCrear" required>
+                <select class="form-select" aria-label="Default select example" id = "sedeCrear" required disabled>
                     <option selected disabled value="0">Elija la sede donde operara el empleado</option>
                     <option value="1">Aduanilla de Paiba</option>
                     <option value="2">Calle 34</option>
@@ -84,7 +94,7 @@
 
             <div class="mb-3">
                 <label for="jefe" class="form-label">Jefe</label>
-                <input type="text" class="form-control" id="jefeCrear" placeholder="Digite el codigo del jefe correspondiente" required>
+                <input type="text" class="form-control" id="jefeCrear" placeholder="Digite el codigo del jefe correspondiente" required disabled>
             </div>
 
             <button type="submit" class="btn btn-primary" id = "enviarCrear">Enviar</button>
