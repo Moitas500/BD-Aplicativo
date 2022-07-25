@@ -3,6 +3,8 @@ package com.bd1.Back.controller;
 import com.bd1.Back.entity.Personal;
 import com.bd1.Back.service.PersonalService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,22 +17,22 @@ public class PersonalController {
     private PersonalService personalService;
 
     @GetMapping
-    public List<Personal> finAll(){
-        return personalService.findAll();
+    public ResponseEntity<List<Personal>> finAll(){
+        return new ResponseEntity<>(personalService.findAll(), HttpStatus.OK);
     }
 
     @PostMapping
-    public Personal create(@RequestBody Personal personal) throws Exception {
-        return personalService.create(personal);
+    public ResponseEntity<Personal> create(@RequestBody Personal personal) throws Exception {
+        return new ResponseEntity<>(personalService.create(personal), HttpStatus.CREATED);
     }
 
     @PutMapping
-    public Personal update(@RequestBody Personal personal) throws Exception {
-        return personalService.update(personal);
+    public ResponseEntity<Personal> update(@RequestBody Personal personal) throws Exception {
+        return new ResponseEntity<>(personalService.update(personal), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public Personal findById(@PathVariable("id") String idPersonal){
-        return personalService.findById(idPersonal);
+    public ResponseEntity<Personal> findById(@PathVariable("id") String idPersonal){
+        return new ResponseEntity<>(personalService.findById(idPersonal), HttpStatus.OK);
     }
 }

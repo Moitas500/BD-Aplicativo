@@ -8,32 +8,32 @@ public class Cargo {
 
     @Id
     @GeneratedValue
-    @Column(name = "idCargo", nullable = false, length = 8)
-    private String id;
+    @Column(name = "IDCARGO")
+    private String IDCARGO;
 
-    @Column(name = "tipoCargo", nullable = false, length = 30)
-    private String tipoCargo;
+    @Column(name = "TIPOCARGO", nullable = false, length = 30)
+    private String TIPOCARGO;
 
     public Cargo(String id, String tipoCargo){
-        this.id = id;
-        this.tipoCargo = tipoCargo;
+        this.IDCARGO = id;
+        this.TIPOCARGO = tipoCargo;
     }
 
     public Cargo(){}
 
-    public void setIdCargo(String id){
-        this.id = id;
+    public void setIDCARGO(String id){
+        this.IDCARGO = id;
     }
 
-    public String getIdCargo(){
-        return this.id;
+    public String getIDCARGO(){
+        return this.IDCARGO;
     }
 
-    public void setTipoCargo(String tipoCargo){
-        this.tipoCargo = tipoCargo;
+    public void setTIPOCARGO(String TIPOCARGO){
+        this.TIPOCARGO = TIPOCARGO;
     }
 
-    public String getTipoCargo(){
-        return this.tipoCargo;
+    public String getTIPOCARGO(){
+        return this.TIPOCARGO;
     }
 }

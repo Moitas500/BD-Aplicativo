@@ -1,67 +1,79 @@
 package com.bd1.Back.entity;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "Personal")
 public class Personal {
     @Id
-    @Column(name = "IdPersonal", nullable = false, length = 5)
-    private String id;
+    @Column(name = "IDPERSONAL", nullable = false, length = 5)
+    private String IDPERSONAL;
 
-    @OneToMany
-    @JoinColumn(name = "idPersona", nullable = false)
-    private Persona idPersona;
+    @OneToOne
+    @JoinColumn(name = "IDPERSONA", nullable = false)
+    private Persona IDPERSONA;
 
-    @OneToMany
-    @JoinColumn(name = "idCargo", nullable = false)
-    private Cargo idCargo;
+    @OneToOne
+    @JoinColumn(name = "IDCARGO",  nullable = false)
+    private Cargo IDCARGO;
 
-    @OneToMany
-    @JoinColumn(name = "idSede", nullable = false)
-    private Sede idSede;
+    @OneToOne
+    @JoinColumn(name = "IDSEDE", nullable = false)
+    private Sede IDSEDE;
 
-    @OneToMany
-    @JoinColumn(name = "JefeIdPersonal", nullable = true)
-    private Personal idJefe;
+    @OneToOne
+    @JoinColumn(name = "JEFEIDPERSONAL", nullable = true)
+    private Personal JEFEIDPERSONAL;
 
-    public String getId() {
-        return id;
+    public String getIDPERSONAL() {
+        return IDPERSONAL;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setIDPERSONAL(String IDPERSONAL) {
+        this.IDPERSONAL = IDPERSONAL;
     }
 
-    public Persona getIdPersona() {
-        return idPersona;
+    public Persona getIDPERSONA() {
+        return IDPERSONA;
     }
 
-    public void setIdPersona(Persona idPersona) {
-        this.idPersona = idPersona;
+    public void setIDPERSONA(Persona IDPERSONA) {
+        this.IDPERSONA = IDPERSONA;
     }
 
-    public Cargo getIdCargo() {
-        return idCargo;
+    public Cargo getIDCARGO() {
+        return IDCARGO;
     }
 
-    public void setIdCargo(Cargo idCargo) {
-        this.idCargo = idCargo;
+    public void setIDCARGO(Cargo IDCARGO) {
+        this.IDCARGO = IDCARGO;
     }
 
-    public Sede getIdSede() {
-        return idSede;
+    public Sede getIDSEDE() {
+        return IDSEDE;
     }
 
-    public void setIdSede(Sede idSede) {
-        this.idSede = idSede;
+    public void setIDSEDE(Sede IDSEDE) {
+        this.IDSEDE = IDSEDE;
     }
 
-    public Personal getIdJefe() {
-        return idJefe;
+    public Personal getJEFEIDPERSONAL() {
+        return JEFEIDPERSONAL;
     }
 
-    public void setIdJefe(Personal idJefe) {
-        this.idJefe = idJefe;
+    public void setJEFEIDPERSONAL(Personal JEFEIDPERSONAL) {
+        this.JEFEIDPERSONAL = JEFEIDPERSONAL;
+    }
+
+    @Override
+    public String toString() {
+        return "Personal{" +
+                "IDPERSONAL='" + IDPERSONAL + '\'' +
+                ", IDPERSONA=" + IDPERSONA +
+                ", IDCARGO=" + IDCARGO +
+                ", IDSEDE=" + IDSEDE +
+                ", JEFEIDPERSONAL=" + JEFEIDPERSONAL +
+                '}';
     }
 }

@@ -15,36 +15,13 @@ public class PersonalService {
     @Autowired
     private PersonalRepository personalRepository;
 
-    @Transactional
-    public Personal create(Personal personal) throws Exception {
-        try {
-            if (!personalRepository.existsById(personal.getId())){
-                personalRepository.save(personal);
-                return personal;
-            } else {
-                throw new Exception();
-            }
-        } catch (Exception e){
-            e.printStackTrace();
-            throw e;
-        }
+    public Personal create(Personal personal) {
+        System.out.println(personal.toString());
+        return personalRepository.save(personal);
     }
 
-    @Transactional
-    public Personal update(Personal persona) throws Exception {
-        if (personalRepository.existsById(persona.getId())){
-            try {
-                Personal personal1 = personalRepository.findById(persona.getId()).get();
-                personal1.setIdCargo(persona.getIdCargo());
-                personal1.setIdSede(persona.getIdSede());
-                personal1.setIdJefe(persona.getIdJefe());
-                return personal1;
-            } catch (Exception e){
-                throw e;
-            }
-        } else {
-            throw new Exception();
-        }
+    public Personal update(Personal persona) {
+        return personalRepository.save(persona);
     }
 
     public Personal findById(String id){

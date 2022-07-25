@@ -15,35 +15,15 @@ public class PersonaService {
     @Autowired
     private PersonaRepository personaRepository;
 
-    @Transactional
-    public Persona create(Persona persona) throws Exception {
-        try {
-            if (!personaRepository.existsById(persona.getId())){
-                personaRepository.save(persona);
-                return persona;
-            } else {
-                throw new Exception();
-            }
-        } catch (Exception e){
-            e.printStackTrace();
-            throw e;
-        }
+    public Persona create(Persona persona) {
+        System.out.println(persona.toString());
+
+        return personaRepository.save(persona);
     }
 
-    @Transactional
-    public Persona update(Persona persona) throws Exception {
-        if (personaRepository.existsById(persona.getId())){
-            try {
-                Persona persona1 = personaRepository.findById(persona.getId()).get();
-                persona1.setNombres(persona.getNombres());
-                persona1.setApellidos(persona.getApellidos());
-                return persona1;
-            } catch (Exception e){
-                throw e;
-            }
-        } else {
-            throw new Exception();
-        }
+    public Persona update(Persona persona)  {
+        System.out.println(persona.toString());
+       return personaRepository.save(persona);
     }
 
     public Persona findById(Integer id){

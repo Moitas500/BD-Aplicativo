@@ -9,8 +9,8 @@ import javax.persistence.Table;
 @Table(name = "Persona")
 public class Persona {
     @Id
-    @Column(name = "IdPersona", nullable = false, length = 15)
-    private Integer id;
+    @Column(name = "idpersona", nullable = false, length = 15, unique=true)
+    private Integer idpersona;
 
     @Column(name = "nombres", nullable = false, length = 30)
     private String nombres;
@@ -21,12 +21,12 @@ public class Persona {
     public Persona() {
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getIdpersona() {
+        return idpersona;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setIdpersona(Integer idpersona) {
+        this.idpersona = idpersona;
     }
 
     public String getNombres() {
@@ -43,5 +43,14 @@ public class Persona {
 
     public void setApellidos(String apellidos) {
         this.apellidos = apellidos;
+    }
+
+    @Override
+    public String toString() {
+        return "Persona{" +
+                "id=" + idpersona +
+                ", nombres='" + nombres + '\'' +
+                ", apellidos='" + apellidos + '\'' +
+                '}';
     }
 }

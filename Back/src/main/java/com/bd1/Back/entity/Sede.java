@@ -8,33 +8,33 @@ public class Sede {
 
     @Id
     @GeneratedValue
-    @Column(name = "idSede", nullable = false, length = 8)
-    private String id;
+    @Column(name = "IDSEDE", nullable = false, length = 8)
+    private String IDSEDE;
 
-    @Column(name = "nombre", nullable = false, length = 30)
-    private String nombre;
+    @Column(name = "NOMBRE", nullable = false, length = 30)
+    private String NOMBRE;
 
     public Sede(String id, String nombre){
-        this.id = id;
-        this.nombre = nombre;
+        this.IDSEDE = id;
+        this.NOMBRE = nombre;
     }
 
     public Sede(){}
 
 
-   public void setNombre(String nombre){
-       this.nombre = nombre;
+   public void setNOMBRE(String NOMBRE){
+       this.NOMBRE = NOMBRE;
    }
 
-   public String getNombre(){
-       return this.nombre;
+   public String getNOMBRE(){
+       return this.NOMBRE;
    }
 
-   public void setId(String id){
-       this.id = id;
+   public void setIDSEDE(String IDSEDE){
+       this.IDSEDE = IDSEDE;
    }
 
-   public String getId(){
-       return this.id;
+   public String getIDSEDE(){
+       return this.IDSEDE;
    }
 }
