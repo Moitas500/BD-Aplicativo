@@ -54,6 +54,21 @@ function consultarPersonal(personal){
     return xhttp.responseText;
    
 }
+function IngresarPersonas(idPersona, nombre, apellido){
+    var xhttp = new XMLHttpRequest();
+
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+        console.log(JSON.parse(this.responseText));
+        }
+    };
+    
+    xhttp.open("POST", "http://localhost:8081/personas/", true);
+    xhttp.setRequestHeader("Content-type", "application/json");
+    xhttp.send('{"idpersona": "'+idPersona+'", "nombres": "'+nombre+'", "apellidos": "'+apellido+'"}');
+    return xhttp.responseText;
+   
+}
 
 function añadirListener(){
     var btnCrear = document.getElementById("crearBoton");
@@ -137,11 +152,15 @@ function añadirListener(){
     var btnEnviarCrear = document.getElementById("enviarCrear");
 
     btnEnviarCrear.addEventListener("click", function(){
-
-        var idPersona=document.getElementById("");
+        var idPersona=document.getElementById("IDpersona");
+        var idPersonal=document.getElementById("IDempleado");
+        var nombre = document.getElementById("nombreCrear");
+        var apellido=  document.getElementById("apellidoCrear");
         var rol = document.getElementById("rolCrear");
         var sede = document.getElementById("sedeCrear");
         
+        console.log(IngresarPersonas(idPersona, nombre, apellido));
+
 
         if(rol.value == "0" || sede.value == "0"){
             alert("Seleccione un rol y sede para el empleado para poder continuar");
