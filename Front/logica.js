@@ -47,7 +47,7 @@ function consultarSedes() {
         url: 'http://localhost:8081/leerSedes',
         dataType: 'json',
         success: function (res) {
-            var opciones = "";
+            var opciones = "<option selected disabled value='0'>Elija el rol del empleado</option>";
             res.forEach(sede => {
                 opciones += '<option value="' + sede.idsede + '">' + sede.nombre + '</option>';
             });
@@ -63,7 +63,7 @@ function consultarCargos() {
         url: 'http://localhost:8081/leerCargos',
         dataType: 'json',
         success: function (res) {
-            var opciones = "";
+            var opciones = "<option selected disabled value='0'>Elija el rol del empleado</option>";
             res.forEach(cargo => {
                 opciones += '<option value="' + cargo.idcargo + '">' + cargo.tipocargo + '</option>';
             });
@@ -84,8 +84,6 @@ function consultarPersonas(idPersona) {
         type: 'GET',
         dataType: 'json',
         success: function (res) {
-            let data = '';
-            console.log("->", res)
             respuesta = res
         },
         // Esto sirve cuando no lo encuentra pero pues no sé si cambiar el alert por otra cosa UwU
@@ -120,41 +118,35 @@ function consultarPersonal(idPersonal) {
 }
 
 function IngresarPersonas(idPersona, nombre, apellido) {
-   
     $.ajax({
         async: false,
         url: "http://localhost:8081/personas",
         type: 'POST',
         contentType: "application/json; charset=utf-8",
         dataType: 'json',
-        data : JSON.stringify({
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify({
             "idpersona": parseInt(idPersona),
             "nombres": nombre,
             "apellidos": apellido
         }),
         success: function () {
             console.log("enviado")
-
-            
         },
         // Esto sirve cuando no lo encuentra pero pues no sé si cambiar el alert por otra cosa UwU
         // error : function(xhr, status) {
         //     alert('Disculpe, existió un problema');
         // },
     })
-    
-
 }
-function IngresarPersonal(idPersonal,idPersona,cargo, sede) {
-    var respuesta
-    
+function IngresarPersonal(idPersonal, idPersona, cargo, sede) {
     $.ajax({
         async: false,
         url: "http://localhost:8081/personal",
         type: 'POST',
         contentType: "application/json; charset=utf-8",
         dataType: 'json',
-        data : JSON.stringify({
+        data: JSON.stringify({
             "idpersonal": idPersonal,
             "idpersona": {
                 "idpersona": parseInt(idPersona)
@@ -168,27 +160,23 @@ function IngresarPersonal(idPersonal,idPersona,cargo, sede) {
         }),
         success: function () {
             console.log("enviado")
-            
+
         },
         // Esto sirve cuando no lo encuentra pero pues no sé si cambiar el alert por otra cosa UwU
         // error : function(xhr, status) {
         //     alert('Disculpe, existió un problema');
         // },
     })
-    return respuesta;
-    
-
 }
 
 function ActualizarPersona(idPersona, nombre, apellido) {
-   
     $.ajax({
         async: false,
         url: "http://localhost:8081/personas",
         type: 'PUT',
         contentType: "application/json; charset=utf-8",
         dataType: 'json',
-        data : JSON.stringify({
+        data: JSON.stringify({
             "idpersona": parseInt(idPersona),
             "nombres": nombre,
             "apellidos": apellido
@@ -196,25 +184,23 @@ function ActualizarPersona(idPersona, nombre, apellido) {
         success: function () {
             console.log("enviado")
 
-            
+
         },
         // Esto sirve cuando no lo encuentra pero pues no sé si cambiar el alert por otra cosa UwU
         // error : function(xhr, status) {
         //     alert('Disculpe, existió un problema');
         // },
     })
-    
-
 }
-function ActualizarPersonal(idPersonal,idPersona,cargo, sede) {
-    var respuesta
+
+function ActualizarPersonal(idPersonal, idPersona, cargo, sede) {
     $.ajax({
         async: false,
         url: "http://localhost:8081/personal",
         type: 'PUT',
         contentType: "application/json; charset=utf-8",
         dataType: 'json',
-        data : JSON.stringify({
+        data: JSON.stringify({
             "idpersonal": idPersonal,
             "idpersona": {
                 "idpersona": parseInt(idPersona)
@@ -228,16 +214,13 @@ function ActualizarPersonal(idPersonal,idPersona,cargo, sede) {
         }),
         success: function () {
             console.log("enviado")
-            
+
         },
         // Esto sirve cuando no lo encuentra pero pues no sé si cambiar el alert por otra cosa UwU
         // error : function(xhr, status) {
         //     alert('Disculpe, existió un problema');
         // },
     })
-    return respuesta;
-    
-
 }
 
 function desactivarCampos() {
@@ -315,14 +298,13 @@ function añadirListener() {
             document.getElementById("apellidoCrear").disabled = false;
             document.getElementById("rolCrear").disabled = false;
             document.getElementById("sedeCrear").disabled = false;
-        }else{
+        } else {
             document.getElementById("nombreCrear").disabled = true;
             document.getElementById("apellidoCrear").disabled = true;
             document.getElementById("rolCrear").disabled = true;
             document.getElementById("sedeCrear").disabled = true;
         }
-    }
-    )
+    })
 
     var idactuzalizarbtn = document.getElementById("IDBotonActualizar");
 
@@ -333,33 +315,31 @@ function añadirListener() {
         var response2 = consultarPersonal(idPersonal.value);
         console.log(response, response2);
         if (response != undefined && response2 != undefined) {
-            var nombre=document.getElementById("nombreActualizar");
-            var apellido=document.getElementById("apellidoActualizar");
-            var rol=document.getElementById("rolActualizar");
-            var sede= document.getElementById("sedeActualizar");
-            idPersona.disabled=true;
-            idPersonal.disabled=true;
+            var nombre = document.getElementById("nombreActualizar");
+            var apellido = document.getElementById("apellidoActualizar");
+            var rol = document.getElementById("rolActualizar");
+            var sede = document.getElementById("sedeActualizar");
+            idPersona.disabled = true;
+            idPersonal.disabled = true;
             nombre.disabled = false;
             apellido.disabled = false;
             rol.disabled = false;
-           sede.disabled = false;
+            sede.disabled = false;
 
             var response = consultarPersonal(idPersonal.value);
-            nombre.value=response.idpersona.nombres;
-            apellido.value=response.idpersona.apellidos;
-            rol.value=response.idcargo.idcargo;
-            sede.value=response.idsede.idsede;
+            nombre.value = response.idpersona.nombres;
+            apellido.value = response.idpersona.apellidos;
+            rol.value = response.idcargo.idcargo;
+            sede.value = response.idsede.idsede;
 
 
-        }else{
+        } else {
             document.getElementById("nombreActualizar").disabled = true;
             document.getElementById("apellidoActualizar").disabled = true;
             document.getElementById("rolActualizar").disabled = true;
             document.getElementById("sedeActualizar").disabled = true;
-
         }
-    }
-    )
+    })
 
     var btnEnviarCrear = document.getElementById("enviarCrear");
 
@@ -386,10 +366,10 @@ function añadirListener() {
     btnEnviarActualizar.addEventListener("click", function () {
         var idPersona = document.getElementById("IDpersonaActualizar");
         var idPersonal = document.getElementById("IDempleadoActualizar");
-        var nombre=document.getElementById("nombreActualizar");
-        var apellido=document.getElementById("apellidoActualizar");
-        var rol=document.getElementById("rolActualizar");
-        var sede= document.getElementById("sedeActualizar");
+        var nombre = document.getElementById("nombreActualizar");
+        var apellido = document.getElementById("apellidoActualizar");
+        var rol = document.getElementById("rolActualizar");
+        var sede = document.getElementById("sedeActualizar");
         ActualizarPersona(idPersona.value, nombre.value, apellido.value);
         ActualizarPersonal(idPersonal.value, idPersona.value, rol.value, sede.value);
 
@@ -403,6 +383,7 @@ function añadirListener() {
 
 function init() {
     añadirListener();
+    consultarSedes();
     consultarCargos();
     $("#crearContainer").hide();
     $("#actualizarContainer").hide();
