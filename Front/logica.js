@@ -80,7 +80,7 @@ function consultarPersonas(idPersona) {
     }
     $.ajax({
         async: false,
-        url: "http://localhost:8081/personal/" + idPersona,
+        url: "http://localhost:8081/personas/" + idPersona,
         type: 'GET',
         dataType: 'json',
         success: function (res) {
