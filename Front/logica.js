@@ -13,8 +13,8 @@ function listarPersonal() {
                 if (empleado.jefeidpersonal != null) {
                     data += `
                     <tr>
-                        <td>${index + 1}</td>
-                        <td>${empleado.idpersonal}</td>
+                        <td align="center">${index + 1}</td>
+                        <td align="center">${empleado.idpersonal}</td>
                         <td>${empleado.idpersona.nombres}</td>
                         <td>${empleado.idpersona.apellidos}</td>
                         <td>${empleado.idcargo.tipocargo}</td>
@@ -26,12 +26,13 @@ function listarPersonal() {
                 } else {
                     data += `
                     <tr>
-                        <td>${index + 1}</td>
-                        <td>${empleado.idpersonal}</td>
+                        <td align="center"  >${index + 1}</td>
+                        <td align="center">${empleado.idpersonal}</td>
                         <td>${empleado.idpersona.nombres}</td>
                         <td>${empleado.idpersona.apellidos}</td>
                         <td>${empleado.idcargo.tipocargo}</td>
                         <td>${empleado.idsede.nombre}</td>
+                        <td> </td>
                     </tr>
                     `
                 }
@@ -47,7 +48,7 @@ function consultarSedes() {
         url: 'http://localhost:8081/leerSedes',
         dataType: 'json',
         success: function (res) {
-            var opciones = "<option selected disabled value='0'>Elija el rol del empleado</option>";
+            var opciones = "<option selected disabled value='0'>Elija la sede donde operara el empleado</option>";
             res.forEach(sede => {
                 opciones += '<option value="' + sede.idsede + '">' + sede.nombre + '</option>';
             });
@@ -72,6 +73,7 @@ function consultarCargos() {
         }
     });
 }
+
 function consultarJefes() {
     $.ajax({
         type: 'get',
@@ -80,13 +82,14 @@ function consultarJefes() {
         success: function (res) {
             var opciones = "<option selected disabled value='0'>Elija el jefe corresponiente</option>";
             res.forEach(personal => {
-                opciones += '<option value="' + personal.idpersonal + '">' + personal.idpersona.nombres + '</option>';
+                opciones += '<option value="' + personal.idpersonal + '">' + personal.idpersona.nombres + ' ' + personal.idpersona.apellidos + ' - ' + personal.idcargo.tipocargo + '</option>';
             });
             $("#jefeCrear").html(opciones);
             $("#jefeActualizar").html(opciones);
         }
     });
 }
+
 function consultarPersonas(idPersona) {
     var respuesta
     if (idPersona == "") {
@@ -119,8 +122,6 @@ function consultarPersonal(idPersonal) {
         type: 'GET',
         dataType: 'json',
         success: function (res) {
-            let data = '';
-            console.log("-->", res)
             respuesta = res
         },
         // Esto sirve cuando no lo encuentra pero pues no sé si cambiar el alert por otra cosa UwU
@@ -153,10 +154,11 @@ function IngresarPersonas(idPersona, nombre, apellido) {
         // },
     })
 }
+
 function IngresarPersonal(idPersonal, idPersona, cargo, sede, idjefe) {
     var datos;
-    if(idjefe==0){
-        datos= JSON.stringify({
+    if (idjefe == 0) {
+        datos = JSON.stringify({
             "idpersonal": idPersonal,
             "idpersona": {
                 "idpersona": parseInt(idPersona)
@@ -168,8 +170,8 @@ function IngresarPersonal(idPersonal, idPersona, cargo, sede, idjefe) {
                 "idsede": sede
             }
         });
-    }else{
-        datos= JSON.stringify({
+    } else {
+        datos = JSON.stringify({
             "idpersonal": idPersonal,
             "idpersona": {
                 "idpersona": parseInt(idPersona)
@@ -180,7 +182,7 @@ function IngresarPersonal(idPersonal, idPersona, cargo, sede, idjefe) {
             "idsede": {
                 "idsede": sede
             },
-            "jefeidpersonal":{
+            "jefeidpersonal": {
                 "idpersonal": idjefe
             }
         });
@@ -217,8 +219,6 @@ function ActualizarPersona(idPersona, nombre, apellido) {
         }),
         success: function () {
             console.log("enviado")
-
-
         },
         // Esto sirve cuando no lo encuentra pero pues no sé si cambiar el alert por otra cosa UwU
         // error : function(xhr, status) {
@@ -229,8 +229,8 @@ function ActualizarPersona(idPersona, nombre, apellido) {
 
 function ActualizarPersonal(idPersonal, idPersona, cargo, sede, idjefe) {
     var datos;
-    if(idjefe==0){
-        datos= JSON.stringify({
+    if (idjefe == 0) {
+        datos = JSON.stringify({
             "idpersonal": idPersonal,
             "idpersona": {
                 "idpersona": parseInt(idPersona)
@@ -242,8 +242,8 @@ function ActualizarPersonal(idPersonal, idPersona, cargo, sede, idjefe) {
                 "idsede": sede
             }
         });
-    }else{
-        datos= JSON.stringify({
+    } else {
+        datos = JSON.stringify({
             "idpersonal": idPersonal,
             "idpersona": {
                 "idpersona": parseInt(idPersona)
@@ -254,7 +254,7 @@ function ActualizarPersonal(idPersonal, idPersona, cargo, sede, idjefe) {
             "idsede": {
                 "idsede": sede
             },
-            "jefeidpersonal":{
+            "jefeidpersonal": {
                 "idpersonal": idjefe
             }
         });
@@ -268,7 +268,6 @@ function ActualizarPersonal(idPersonal, idPersona, cargo, sede, idjefe) {
         data: datos,
         success: function () {
             console.log("enviado")
-
         },
         // Esto sirve cuando no lo encuentra pero pues no sé si cambiar el alert por otra cosa UwU
         // error : function(xhr, status) {
@@ -291,9 +290,8 @@ function desactivarCampos() {
     document.getElementById("jefeActualizar").disabled = true;
 }
 
-function añadirListener() {
+function agregarListener() {
     var btnCrear = document.getElementById("crearBoton");
-
     btnCrear.addEventListener("click", function () {
         if (!mostrado) {
             $("#crearContainer").show();
@@ -301,7 +299,6 @@ function añadirListener() {
         } else {
             $("#actualizarContainer").hide();
             $("#verContainer").hide();
-
             $("#crearContainer").show();
             mostrado = true;
         }
@@ -309,7 +306,6 @@ function añadirListener() {
     });
 
     var btnEditar = document.getElementById("editarBoton");
-
     btnEditar.addEventListener("click", function () {
         if (!mostrado) {
             $("#actualizarContainer").show();
@@ -317,7 +313,6 @@ function añadirListener() {
         } else {
             $("#crearContainer").hide();
             $("#verContainer").hide();
-
             $("#actualizarContainer").show();
             mostrado = true;
         }
@@ -325,7 +320,6 @@ function añadirListener() {
     });
 
     var btnVer = document.getElementById("verBoton");
-
     btnVer.addEventListener("click", function () {
         if (!mostrado) {
             $("#verContainer").show();
@@ -333,119 +327,156 @@ function añadirListener() {
         } else {
             $("#crearContainer").hide();
             $("#actualizarContainer").hide();
-
             $("#verContainer").show();
         }
         listarPersonal();
     });
 
     var idbtn = document.getElementById("IDBoton");
-
     idbtn.addEventListener("click", function () {
         var idPersona = document.getElementById("IDpersona");
         var idPersonal = document.getElementById("IDempleado");
-        var response = consultarPersonas(idPersona.value);
-        var response2 = consultarPersonal(idPersonal.value);
-        console.log(response);
-        if (response == undefined && response2 == undefined) {
-            document.getElementById("nombreCrear").disabled = false;
-            document.getElementById("apellidoCrear").disabled = false;
-            document.getElementById("rolCrear").disabled = false;
-            document.getElementById("sedeCrear").disabled = false;
-            document.getElementById("jefeCrear").disabled = false;
+
+        if (idPersona.value == "" || idPersonal.value == "") {
+            alert("Por favor digite el id de la persona y el id que se asignara como empleado")
         } else {
-            document.getElementById("nombreCrear").disabled = true;
-            document.getElementById("apellidoCrear").disabled = true;
-            document.getElementById("rolCrear").disabled = true;
-            document.getElementById("sedeCrear").disabled = true;
-            document.getElementById("jefeCrear").disabled = true;
+            var response = consultarPersonas(idPersona.value);
+            var response2 = consultarPersonal(idPersonal.value);
+            if (response2 != undefined) {
+                alert("Ya existe un empleado con este id");
+                idPersonal.focus();
+                idPersonal.value = "";
+            } else if (response != undefined) {
+                var nombre = document.getElementById("nombreCrear");
+                var apellido = document.getElementById("apellidoCrear");
+                var rol = document.getElementById("rolCrear");
+                var sede = document.getElementById("sedeCrear");
+                var jefe = document.getElementById("jefeCrear");
+
+                nombre.value = response.nombres;
+                apellido.value = response.apellidos;
+                rol.disabled = false;
+                sede.disabled = false;
+                jefe.disabled = false;
+            } else if (response == undefined) {
+                document.getElementById("nombreCrear").disabled = false;
+                document.getElementById("apellidoCrear").disabled = false;
+                document.getElementById("rolCrear").disabled = false;
+                document.getElementById("sedeCrear").disabled = false;
+                document.getElementById("jefeCrear").disabled = false;
+            }
         }
     })
 
     var idactuzalizarbtn = document.getElementById("IDBotonActualizar");
-
     idactuzalizarbtn.addEventListener("click", function () {
         var idPersona = document.getElementById("IDpersonaActualizar");
         var idPersonal = document.getElementById("IDempleadoActualizar");
-        var response = consultarPersonas(idPersona.value);
-        var response2 = consultarPersonal(idPersonal.value);
-        console.log(response, response2);
-        if (response != undefined && response2 != undefined) {
-            var nombre = document.getElementById("nombreActualizar");
-            var apellido = document.getElementById("apellidoActualizar");
-            var rol = document.getElementById("rolActualizar");
-            var sede = document.getElementById("sedeActualizar");
-            var jefe=document.getElementById("jefeActualizar");
-            
-            idPersona.disabled = true;
-            idPersonal.disabled = true;
-            nombre.disabled = false;
-            apellido.disabled = false;
-            rol.disabled = false;
-            sede.disabled = false;
-            jefe.disabled = false;
-
-            var response = consultarPersonal(idPersonal.value);
-            nombre.value = response.idpersona.nombres;
-            apellido.value = response.idpersona.apellidos;
-            rol.value = response.idcargo.idcargo;
-            sede.value = response.idsede.idsede;
-            jefe.value = response.jefeidpersonal.idpersonal;
-
-
+        if (idPersona.value == "" || idPersonal.value == "") {
+            alert("Por favor digite el id de la persona y el id que se asignara como empleado")
         } else {
-            document.getElementById("nombreActualizar").disabled = true;
-            document.getElementById("apellidoActualizar").disabled = true;
-            document.getElementById("rolActualizar").disabled = true;
-            document.getElementById("sedeActualizar").disabled = true;
-            document.getElementById("jefeActualizar").disabled = true;
+            var response = consultarPersonas(idPersona.value);
+            var response2 = consultarPersonal(idPersonal.value);
+            console.log(response, response2)
+
+            if (response == undefined) {
+                alert("El id de la persona ingresado no existe, corríjalo");
+                idPersona.focus();
+                idPersona.value = "";
+            } else if (response2 == undefined) {
+                alert("El id del empleado ingresado no existe, corríjalo");
+                idPersonal.focus();
+                idPersonal.value = "";
+            } else if (response.idpersona == response2.idpersona.idpersona) {
+                var nombre = document.getElementById("nombreActualizar");
+                var apellido = document.getElementById("apellidoActualizar");
+                var rol = document.getElementById("rolActualizar");
+                var sede = document.getElementById("sedeActualizar");
+                var jefe = document.getElementById("jefeActualizar");
+
+                idPersona.disabled = true;
+                idPersonal.disabled = true;
+                nombre.disabled = false;
+                apellido.disabled = false;
+                rol.disabled = false;
+                sede.disabled = false;
+                jefe.disabled = false;
+
+                nombre.value = response2.idpersona.nombres;
+                apellido.value = response2.idpersona.apellidos;
+                rol.value = response2.idcargo.idcargo;
+                sede.value = response2.idsede.idsede;
+                if (response2.jefeidpersonal != null) {
+                    jefe.value = response2.jefeidpersonal.idpersonal;
+                }
+                $(" option[value='" + idPersonal.value + "']").remove();
+            } else {
+                alert("El id del empleado ingresado no existe no corresponde a la persona solicitada, corríjalo");
+                idPersona.focus();
+            }
         }
     })
 
     var btnEnviarCrear = document.getElementById("enviarCrear");
-
     btnEnviarCrear.addEventListener("click", function () {
-        var idPersona = document.getElementById("IDpersona");
-        var idPersonal = document.getElementById("IDempleado");
-        var nombre = document.getElementById("nombreCrear");
-        var apellido = document.getElementById("apellidoCrear");
         var rol = document.getElementById("rolCrear");
         var sede = document.getElementById("sedeCrear");
-        var jefe = document.getElementById("jefeCrear");
-        IngresarPersonas(idPersona.value, nombre.value, apellido.value);
-        IngresarPersonal(idPersonal.value, idPersona.value, rol.value, sede.value, jefe.value);
-
 
         if (rol.value == "0" || sede.value == "0") {
             alert("Seleccione un rol y sede para el empleado para poder continuar");
         } else {
-            //Aqui iria todo el codigo para crear empleado
+            var idPersona = document.getElementById("IDpersona");
+            var idPersonal = document.getElementById("IDempleado");
+            var nombre = document.getElementById("nombreCrear");
+            var apellido = document.getElementById("apellidoCrear");
+            var jefe = document.getElementById("jefeCrear");
+            IngresarPersonas(idPersona.value, nombre.value, apellido.value);
+            IngresarPersonal(idPersonal.value, idPersona.value, rol.value, sede.value, jefe.value);
         }
     }, false);
 
     var btnEnviarActualizar = document.getElementById("enviarActualizar");
-
     btnEnviarActualizar.addEventListener("click", function () {
-        var idPersona = document.getElementById("IDpersonaActualizar");
-        var idPersonal = document.getElementById("IDempleadoActualizar");
-        var nombre = document.getElementById("nombreActualizar");
-        var apellido = document.getElementById("apellidoActualizar");
         var rol = document.getElementById("rolActualizar");
         var sede = document.getElementById("sedeActualizar");
-        var jefe = document.getElementById("jefeActualizar");
-        ActualizarPersona(idPersona.value, nombre.value, apellido.value);
-        ActualizarPersonal(idPersonal.value, idPersona.value, rol.value, sede.value, jefe.value);
 
         if (rol.value == "0" || sede.value == "0") {
             alert("Seleccione un rol y sede para el empleado para poder continuar");
         } else {
-            //Aqui iria todo el codigo para crear empleado
+            var idPersona = document.getElementById("IDpersonaActualizar");
+            var idPersonal = document.getElementById("IDempleadoActualizar");
+            var nombre = document.getElementById("nombreActualizar");
+            var apellido = document.getElementById("apellidoActualizar");
+            var jefe = document.getElementById("jefeActualizar");
+            ActualizarPersona(idPersona.value, nombre.value, apellido.value);
+            ActualizarPersonal(idPersonal.value, idPersona.value, rol.value, sede.value, jefe.value);
         }
     });
+
+    var cancelarCrearbtn = document.getElementById("cancelarCrear");
+    cancelarCrearbtn.addEventListener("click", function () {
+        document.getElementById("IDpersona").disabled = false;
+        document.getElementById("IDpersonaActualizar").disabled = false;
+        document.getElementById("IDempleado").disabled = false;
+        document.getElementById("IDempleadoActualizar").disabled = false;
+
+        desactivarCampos();
+    });
+
+    var cancelarActualizarbtn = document.getElementById("cancelarActualizar");
+    cancelarActualizarbtn.addEventListener("click", function () {
+        document.getElementById("IDpersona").disabled = false;
+        document.getElementById("IDpersonaActualizar").disabled = false;
+        document.getElementById("IDempleado").disabled = false;
+        document.getElementById("IDempleadoActualizar").disabled = false;
+
+        desactivarCampos();
+    });
+
 }
 
 function init() {
-    añadirListener();
+    agregarListener();
     consultarSedes();
     consultarCargos();
     consultarJefes();

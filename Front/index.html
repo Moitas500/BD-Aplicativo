@@ -48,7 +48,7 @@
                 <label for="nombre" class="form-label">ID empleado</label>
                 <input type="text" class="form-control" id="IDempleado" placeholder="Digite el id del empleado" required >
               </div>
-              <button type="button" id="IDBoton" class="btn btn-outline-primary">buscar personal</button>
+                <button type="button" id="IDBoton" class="btn btn-outline-primary">buscar personal</button>
             <div class="mb-3">
               <label for="nombre" class="form-label">Nombre empleado</label>
               <input type="text" class="form-control" id="nombreCrear" placeholder="Digite el nombre del empleado" required disabled>
@@ -77,7 +77,10 @@
                 </select>
                 </div>
 
-            <button type="submit" class="btn btn-primary" id = "enviarCrear">Enviar</button>
+                <div>
+                  <button type="submit" class="btn btn-primary" id = "enviarCrear">Enviar</button>
+              <button type="reset" class="btn btn-danger" id="cancelarCrear">Cancelar</button>
+                </div>
           </form>
           <div id="liveAlertPlaceholder"></div>
       </div>
@@ -96,7 +99,7 @@
             <label for="nombre" class="form-label">ID empleado</label>
             <input type="text" class="form-control" id="IDempleadoActualizar" placeholder="Digite el id del empleado" required >
           </div>
-          <button type="button" id="IDBotonActualizar" class="btn btn-outline-primary">buscar personal</button>
+            <button type="button" id="IDBotonActualizar" class="btn btn-outline-primary">buscar personal</button>
 
             <div class="mb-3">
               <label for="nombre" class="form-label">Nombre empleado</label>
@@ -125,22 +128,25 @@
                 <select class="form-select" aria-label="Default select example" id = "jefeActualizar"></select>
             </div>
 
-            <button type="submit" class="btn btn-primary" id = "enviarActualizar">Enviar</button>
+            <div>
+              <button type="submit" class="btn btn-primary" id = "enviarActualizar">Enviar</button>
+              <button type="reset" class="btn btn-danger" id="cancelarActualizar">Cancelar</button>
+            </div>
           </form>
         </div>
 
       <div id = "verContainer" class="container">
         <div class="card">
-          <table class="table">
+          <table class="table  table-striped table-bordered">
             <thead>
               <tr>
-                <th scope="col">#</th>
-                <th scope="col">Id empleado</th>
-                <th scope="col">Nombres</th>
-                <th scope="col">Apellidos</th>
-                <th scope="col">Cargo</th>
-                <th scope="col">Sede</th>
-                <th scope="col">Jefe</th>
+                <th scope="col" class="text-center">#</th>
+                <th scope="col" class="text-center" >Id empleado</th>
+                <th scope="col" >Nombres</th>
+                <th scope="col" >Apellidos</th>
+                <th scope="col" >Cargo</th>
+                <th scope="col" >Sede</th>
+                <th scope="col" >Jefe</th>
               </tr>
             </thead>
             <tbody id="datosEmpleados">
