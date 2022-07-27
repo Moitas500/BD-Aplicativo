@@ -120,18 +120,61 @@ function consultarPersonal(idPersonal) {
 }
 
 function IngresarPersonas(idPersona, nombre, apellido) {
-    var xhttp = new XMLHttpRequest();
+   
+    $.ajax({
+        async: false,
+        url: "http://localhost:8081/personas",
+        type: 'POST',
+        dataType: 'json',
+        data : JSON.stringify({
+            "idpersona": parseInt(idPersona),
+            "nombres": nombre,
+            "apellidos": apellido
+        }),
+        success: function () {
+            console.log("enviado")
 
-    xhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log(JSON.parse(this.responseText));
-        }
-    };
+            
+        },
+        // Esto sirve cuando no lo encuentra pero pues no sé si cambiar el alert por otra cosa UwU
+        // error : function(xhr, status) {
+        //     alert('Disculpe, existió un problema');
+        // },
+    })
+    
 
-    xhttp.open("POST", "http://localhost:8081/personas/", true);
-    xhttp.setRequestHeader("Content-type", "application/json");
-    xhttp.send('{"idpersona": "' + idPersona + '", "nombres": "' + nombre + '", "apellidos": "' + apellido + '"}');
-    return xhttp.responseText;
+}
+function IngresarPersonal(idPersonal,idPersona,cargo, sede) {
+    var respuesta
+    
+    $.ajax({
+        async: false,
+        url: "http://localhost:8081/personal",
+        type: 'POST',
+        dataType: 'json',
+        data : JSON.stringify({
+            "idpersonal": idPersonal,
+            "idpersona": {
+                "idpersona": idPersona
+            },
+            "idcargo": {
+                "idcargo": cargo
+            },
+            "idsede": {
+                "idsede": sede
+            }
+        }),
+        success: function () {
+            console.log("enviado")
+            
+        },
+        // Esto sirve cuando no lo encuentra pero pues no sé si cambiar el alert por otra cosa UwU
+        // error : function(xhr, status) {
+        //     alert('Disculpe, existió un problema');
+        // },
+    })
+    return respuesta;
+    
 
 }
 
@@ -205,11 +248,16 @@ function añadirListener() {
         var response = consultarPersonas(idPersona.value);
         var response2 = consultarPersonal(idPersonal.value);
         console.log(response);
-        if (response == "" && response2 == "") {
+        if (response == undefined && response2 == undefined) {
             document.getElementById("nombreCrear").disabled = false;
             document.getElementById("apellidoCrear").disabled = false;
             document.getElementById("rolCrear").disabled = false;
             document.getElementById("sedeCrear").disabled = false;
+        }else{
+            document.getElementById("nombreCrear").disabled = true;
+            document.getElementById("apellidoCrear").disabled = true;
+            document.getElementById("rolCrear").disabled = true;
+            document.getElementById("sedeCrear").disabled = true;
         }
     }
     )
@@ -222,7 +270,7 @@ function añadirListener() {
         var response = consultarPersonas(idPersona.value);
         var response2 = consultarPersonal(idPersonal.value);
         console.log(response, response2);
-        if (response == "" && response2 == "") {
+        if (response == undefined && response2 == undefined) {
             document.getElementById("nombreActualizar").disabled = false;
             document.getElementById("apellidoActualizar").disabled = false;
             document.getElementById("rolActualizar").disabled = false;
@@ -240,8 +288,10 @@ function añadirListener() {
         var apellido = document.getElementById("apellidoCrear");
         var rol = document.getElementById("rolCrear");
         var sede = document.getElementById("sedeCrear");
-
-        console.log(IngresarPersonas(idPersona, nombre, apellido));
+        console.log(rol.value);
+        console.log(sede.value);
+        IngresarPersonas(idPersona, nombre, apellido);
+        //  IngresarPersonal(idPersonal,idPersona, rol.value, sede.value);
 
 
         if (rol.value == "0" || sede.value == "0") {
@@ -249,7 +299,7 @@ function añadirListener() {
         } else {
             //Aqui iria todo el codigo para crear empleado
         }
-    });
+    }, false);
 
     var btnEnviarActualizar = document.getElementById("enviarActualizar");
 
