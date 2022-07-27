@@ -72,7 +72,21 @@ function consultarCargos() {
         }
     });
 }
-
+function consultarJefes() {
+    $.ajax({
+        type: 'get',
+        url: 'http://localhost:8081/personal',
+        dataType: 'json',
+        success: function (res) {
+            var opciones = "<option selected disabled value='0'>Elija el jefe corresponiente</option>";
+            res.forEach(personal => {
+                opciones += '<option value="' + personal.idpersonal + '">' + personal.idpersona.nombres + '</option>';
+            });
+            $("#jefeCrear").html(opciones);
+            $("#jefeActualizar").html(opciones);
+        }
+    });
+}
 function consultarPersonas(idPersona) {
     var respuesta
     if (idPersona == "") {
@@ -139,14 +153,10 @@ function IngresarPersonas(idPersona, nombre, apellido) {
         // },
     })
 }
-function IngresarPersonal(idPersonal, idPersona, cargo, sede) {
-    $.ajax({
-        async: false,
-        url: "http://localhost:8081/personal",
-        type: 'POST',
-        contentType: "application/json; charset=utf-8",
-        dataType: 'json',
-        data: JSON.stringify({
+function IngresarPersonal(idPersonal, idPersona, cargo, sede, idjefe) {
+    var datos;
+    if(idjefe==0){
+        datos= JSON.stringify({
             "idpersonal": idPersonal,
             "idpersona": {
                 "idpersona": parseInt(idPersona)
@@ -157,7 +167,31 @@ function IngresarPersonal(idPersonal, idPersona, cargo, sede) {
             "idsede": {
                 "idsede": sede
             }
-        }),
+        });
+    }else{
+        datos= JSON.stringify({
+            "idpersonal": idPersonal,
+            "idpersona": {
+                "idpersona": parseInt(idPersona)
+            },
+            "idcargo": {
+                "idcargo": cargo
+            },
+            "idsede": {
+                "idsede": sede
+            },
+            "jefeidpersonal":{
+                "idpersonal": idjefe
+            }
+        });
+    }
+    $.ajax({
+        async: false,
+        url: "http://localhost:8081/personal",
+        type: 'POST',
+        contentType: "application/json; charset=utf-8",
+        dataType: 'json',
+        data: datos,
         success: function () {
             console.log("enviado")
 
@@ -193,14 +227,10 @@ function ActualizarPersona(idPersona, nombre, apellido) {
     })
 }
 
-function ActualizarPersonal(idPersonal, idPersona, cargo, sede) {
-    $.ajax({
-        async: false,
-        url: "http://localhost:8081/personal",
-        type: 'PUT',
-        contentType: "application/json; charset=utf-8",
-        dataType: 'json',
-        data: JSON.stringify({
+function ActualizarPersonal(idPersonal, idPersona, cargo, sede, idjefe) {
+    var datos;
+    if(idjefe==0){
+        datos= JSON.stringify({
             "idpersonal": idPersonal,
             "idpersona": {
                 "idpersona": parseInt(idPersona)
@@ -211,7 +241,31 @@ function ActualizarPersonal(idPersonal, idPersona, cargo, sede) {
             "idsede": {
                 "idsede": sede
             }
-        }),
+        });
+    }else{
+        datos= JSON.stringify({
+            "idpersonal": idPersonal,
+            "idpersona": {
+                "idpersona": parseInt(idPersona)
+            },
+            "idcargo": {
+                "idcargo": cargo
+            },
+            "idsede": {
+                "idsede": sede
+            },
+            "jefeidpersonal":{
+                "idpersonal": idjefe
+            }
+        });
+    }
+    $.ajax({
+        async: false,
+        url: "http://localhost:8081/personal",
+        type: 'PUT',
+        contentType: "application/json; charset=utf-8",
+        dataType: 'json',
+        data: datos,
         success: function () {
             console.log("enviado")
 
@@ -298,11 +352,13 @@ function añadirListener() {
             document.getElementById("apellidoCrear").disabled = false;
             document.getElementById("rolCrear").disabled = false;
             document.getElementById("sedeCrear").disabled = false;
+            document.getElementById("jefeCrear").disabled = false;
         } else {
             document.getElementById("nombreCrear").disabled = true;
             document.getElementById("apellidoCrear").disabled = true;
             document.getElementById("rolCrear").disabled = true;
             document.getElementById("sedeCrear").disabled = true;
+            document.getElementById("jefeCrear").disabled = true;
         }
     })
 
@@ -319,18 +375,22 @@ function añadirListener() {
             var apellido = document.getElementById("apellidoActualizar");
             var rol = document.getElementById("rolActualizar");
             var sede = document.getElementById("sedeActualizar");
+            var jefe=document.getElementById("jefeActualizar");
+            
             idPersona.disabled = true;
             idPersonal.disabled = true;
             nombre.disabled = false;
             apellido.disabled = false;
             rol.disabled = false;
             sede.disabled = false;
+            jefe.disabled = false;
 
             var response = consultarPersonal(idPersonal.value);
             nombre.value = response.idpersona.nombres;
             apellido.value = response.idpersona.apellidos;
             rol.value = response.idcargo.idcargo;
             sede.value = response.idsede.idsede;
+            jefe.value = response.jefeidpersonal.idpersonal;
 
 
         } else {
@@ -338,6 +398,7 @@ function añadirListener() {
             document.getElementById("apellidoActualizar").disabled = true;
             document.getElementById("rolActualizar").disabled = true;
             document.getElementById("sedeActualizar").disabled = true;
+            document.getElementById("jefeActualizar").disabled = true;
         }
     })
 
@@ -350,8 +411,9 @@ function añadirListener() {
         var apellido = document.getElementById("apellidoCrear");
         var rol = document.getElementById("rolCrear");
         var sede = document.getElementById("sedeCrear");
+        var jefe = document.getElementById("jefeCrear");
         IngresarPersonas(idPersona.value, nombre.value, apellido.value);
-        IngresarPersonal(idPersonal.value, idPersona.value, rol.value, sede.value);
+        IngresarPersonal(idPersonal.value, idPersona.value, rol.value, sede.value, jefe.value);
 
 
         if (rol.value == "0" || sede.value == "0") {
@@ -370,8 +432,9 @@ function añadirListener() {
         var apellido = document.getElementById("apellidoActualizar");
         var rol = document.getElementById("rolActualizar");
         var sede = document.getElementById("sedeActualizar");
+        var jefe = document.getElementById("jefeActualizar");
         ActualizarPersona(idPersona.value, nombre.value, apellido.value);
-        ActualizarPersonal(idPersonal.value, idPersona.value, rol.value, sede.value);
+        ActualizarPersonal(idPersonal.value, idPersona.value, rol.value, sede.value, jefe.value);
 
         if (rol.value == "0" || sede.value == "0") {
             alert("Seleccione un rol y sede para el empleado para poder continuar");
@@ -385,6 +448,7 @@ function init() {
     añadirListener();
     consultarSedes();
     consultarCargos();
+    consultarJefes();
     $("#crearContainer").hide();
     $("#actualizarContainer").hide();
     listarPersonal();
