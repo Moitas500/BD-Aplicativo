@@ -69,30 +69,44 @@ function consultarCargos() {
 
 function consultarPersonas(idPersona) {
     var respuesta
+    if (idPersona == "") {
+        idPersona = "-1";
+    }
     $.ajax({
         url: "http://localhost:8081/personal/" + idPersona,
         type: 'GET',
         dataType: 'json',
         success: function (res) {
             let data = '';
-            console.log(res)
+            console.log("->",res)
             respuesta = res
-        }
+        },
+        // Esto sirve cuando no lo encuentra pero pues no sé si cambiar el alert por otra cosa UwU
+        // error : function(xhr, status) {
+        //     alert('Disculpe, existió un problema');
+        // },
     })
     return respuesta;
 }
 
 function consultarPersonal(idPersonal) {
     var respuesta
+    if (idPersonal == "") {
+        idPersonal = "-1";
+    }
     $.ajax({
         url: "http://localhost:8081/personal/" + idPersonal,
         type: 'GET',
         dataType: 'json',
         success: function (res) {
             let data = '';
-            console.log(res)
+            console.log("-->",res)
             respuesta = res
-        }
+        },
+        // Esto sirve cuando no lo encuentra pero pues no sé si cambiar el alert por otra cosa UwU
+        // error : function(xhr, status) {
+        //     alert('Disculpe, existió un problema');
+        // },
     })
     return respuesta;
 }
