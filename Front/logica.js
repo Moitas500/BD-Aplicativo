@@ -73,6 +73,7 @@ function consultarPersonas(idPersona) {
         idPersona = "-1";
     }
     $.ajax({
+        async: false,
         url: "http://localhost:8081/personal/" + idPersona,
         type: 'GET',
         dataType: 'json',
@@ -95,6 +96,7 @@ function consultarPersonal(idPersonal) {
         idPersonal = "-1";
     }
     $.ajax({
+        async: false,
         url: "http://localhost:8081/personal/" + idPersonal,
         type: 'GET',
         dataType: 'json',
