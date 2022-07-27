@@ -180,6 +180,66 @@ function IngresarPersonal(idPersonal,idPersona,cargo, sede) {
 
 }
 
+function ActualizarPersona(idPersona, nombre, apellido) {
+   
+    $.ajax({
+        async: false,
+        url: "http://localhost:8081/personas",
+        type: 'PUT',
+        contentType: "application/json; charset=utf-8",
+        dataType: 'json',
+        data : JSON.stringify({
+            "idpersona": parseInt(idPersona),
+            "nombres": nombre,
+            "apellidos": apellido
+        }),
+        success: function () {
+            console.log("enviado")
+
+            
+        },
+        // Esto sirve cuando no lo encuentra pero pues no sé si cambiar el alert por otra cosa UwU
+        // error : function(xhr, status) {
+        //     alert('Disculpe, existió un problema');
+        // },
+    })
+    
+
+}
+function ActualizarPersonal(idPersonal,idPersona,cargo, sede) {
+    var respuesta
+    $.ajax({
+        async: false,
+        url: "http://localhost:8081/personal",
+        type: 'PUT',
+        contentType: "application/json; charset=utf-8",
+        dataType: 'json',
+        data : JSON.stringify({
+            "idpersonal": idPersonal,
+            "idpersona": {
+                "idpersona": parseInt(idPersona)
+            },
+            "idcargo": {
+                "idcargo": cargo
+            },
+            "idsede": {
+                "idsede": sede
+            }
+        }),
+        success: function () {
+            console.log("enviado")
+            
+        },
+        // Esto sirve cuando no lo encuentra pero pues no sé si cambiar el alert por otra cosa UwU
+        // error : function(xhr, status) {
+        //     alert('Disculpe, existió un problema');
+        // },
+    })
+    return respuesta;
+    
+
+}
+
 function desactivarCampos() {
     document.getElementById("nombreCrear").disabled = true;
     document.getElementById("apellidoCrear").disabled = true;
@@ -277,13 +337,14 @@ function añadirListener() {
             var apellido=document.getElementById("apellidoActualizar");
             var rol=document.getElementById("rolActualizar");
             var sede= document.getElementById("sedeActualizar");
+            idPersona.disabled=true;
+            idPersonal.disabled=true;
             nombre.disabled = false;
             apellido.disabled = false;
             rol.disabled = false;
            sede.disabled = false;
 
             var response = consultarPersonal(idPersonal.value);
-            console.log("idcargo: "+ response.idcargo);
             nombre.value=response.idpersona.nombres;
             apellido.value=response.idpersona.apellidos;
             rol.value=response.idcargo.idcargo;
@@ -309,9 +370,6 @@ function añadirListener() {
         var apellido = document.getElementById("apellidoCrear");
         var rol = document.getElementById("rolCrear");
         var sede = document.getElementById("sedeCrear");
-        console.log(nombre);
-        console.log(rol.value);
-        console.log(sede.value);
         IngresarPersonas(idPersona.value, nombre.value, apellido.value);
         IngresarPersonal(idPersonal.value, idPersona.value, rol.value, sede.value);
 
@@ -326,8 +384,14 @@ function añadirListener() {
     var btnEnviarActualizar = document.getElementById("enviarActualizar");
 
     btnEnviarActualizar.addEventListener("click", function () {
-        var rol = document.getElementById("rolActualizar");
-        var sede = document.getElementById("sedeActualizar");
+        var idPersona = document.getElementById("IDpersonaActualizar");
+        var idPersonal = document.getElementById("IDempleadoActualizar");
+        var nombre=document.getElementById("nombreActualizar");
+        var apellido=document.getElementById("apellidoActualizar");
+        var rol=document.getElementById("rolActualizar");
+        var sede= document.getElementById("sedeActualizar");
+        ActualizarPersona(idPersona.value, nombre.value, apellido.value);
+        ActualizarPersonal(idPersonal.value, idPersona.value, rol.value, sede.value);
 
         if (rol.value == "0" || sede.value == "0") {
             alert("Seleccione un rol y sede para el empleado para poder continuar");
