@@ -20,7 +20,7 @@ function listarPersonal() {
                         <td>${empleado.idcargo.tipocargo}</td>
                         <td>${empleado.idsede.nombre}</td>
                         <td>${empleado.jefeidpersonal.idpersona.nombres +
-                             " " + empleado.jefeidpersonal.idpersona.apellidos}</td>
+                        " " + empleado.jefeidpersonal.idpersona.apellidos}</td>
                     </tr>
                     `
                 } else {
@@ -42,29 +42,35 @@ function listarPersonal() {
 }
 
 function consultarSedes() {
-    var xhttp = new XMLHttpRequest();
-
-    xhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log(JSON.parse(this.responseText));
+    $.ajax({
+        type: 'get',
+        url: 'http://localhost:8081/leerSedes',
+        dataType: 'json',
+        success: function (res) {
+            var opciones = "";
+            res.forEach(sede => {
+                opciones += '<option value="' + sede.idsede + '">' + sede.nombre + '</option>';
+            });
+            $("#sedeCrear").html(opciones);
+            $("#sedeActualizar").html(opciones);
         }
-    };
-
-    xhttp.open("GET", "http://localhost:8081/leerSedes", true);
-    xhttp.setRequestHeader("Content-type", "application/json");
+    });
 }
 
 function consultarCargos() {
-    var xhttp = new XMLHttpRequest();
-
-    xhttp.onreadystatechange = function () {
-        if (this.readyState == 4 && this.status == 200) {
-            console.log(JSON.parse(this.responseText));
+    $.ajax({
+        type: 'get',
+        url: 'http://localhost:8081/leerCargos',
+        dataType: 'json',
+        success: function (res) {
+            var opciones = "";
+            res.forEach(cargo => {
+                opciones += '<option value="' + cargo.idcargo + '">' + cargo.tipocargo + '</option>';
+            });
+            $("#rolCrear").html(opciones);
+            $("#rolActualizar").html(opciones);
         }
-    };
-
-    xhttp.open("GET", "http://localhost:8081/leerCargos", true);
-    xhttp.setRequestHeader("Content-type", "application/json");
+    });
 }
 
 function consultarPersonas(idPersona) {
@@ -79,7 +85,7 @@ function consultarPersonas(idPersona) {
         dataType: 'json',
         success: function (res) {
             let data = '';
-            console.log("->",res)
+            console.log("->", res)
             respuesta = res
         },
         // Esto sirve cuando no lo encuentra pero pues no sé si cambiar el alert por otra cosa UwU
@@ -102,7 +108,7 @@ function consultarPersonal(idPersonal) {
         dataType: 'json',
         success: function (res) {
             let data = '';
-            console.log("-->",res)
+            console.log("-->", res)
             respuesta = res
         },
         // Esto sirve cuando no lo encuentra pero pues no sé si cambiar el alert por otra cosa UwU
@@ -129,7 +135,7 @@ function IngresarPersonas(idPersona, nombre, apellido) {
 
 }
 
-function desactivarCampos(){
+function desactivarCampos() {
     document.getElementById("nombreCrear").disabled = true;
     document.getElementById("apellidoCrear").disabled = true;
     document.getElementById("rolCrear").disabled = true;
@@ -261,6 +267,7 @@ function añadirListener() {
 
 function init() {
     añadirListener();
+    consultarCargos();
     $("#crearContainer").hide();
     $("#actualizarContainer").hide();
     listarPersonal();
