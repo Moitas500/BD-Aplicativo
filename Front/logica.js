@@ -272,11 +272,30 @@ function añadirListener() {
         var response = consultarPersonas(idPersona.value);
         var response2 = consultarPersonal(idPersonal.value);
         console.log(response, response2);
-        if (response == undefined && response2 == undefined) {
-            document.getElementById("nombreActualizar").disabled = false;
-            document.getElementById("apellidoActualizar").disabled = false;
-            document.getElementById("rolActualizar").disabled = false;
-            document.getElementById("sedeActualizar").disabled = false;
+        if (response != undefined && response2 != undefined) {
+            var nombre=document.getElementById("nombreActualizar");
+            var apellido=document.getElementById("apellidoActualizar");
+            var rol=document.getElementById("rolActualizar");
+            var sede= document.getElementById("sedeActualizar");
+            nombre.disabled = false;
+            apellido.disabled = false;
+            rol.disabled = false;
+           sede.disabled = false;
+
+            var response = consultarPersonal(idPersonal.value);
+            console.log("idcargo: "+ response.idcargo);
+            nombre.value=response.idpersona.nombres;
+            apellido.value=response.idpersona.apellidos;
+            rol.value=response.idcargo.idcargo;
+            sede.value=response.idsede.idsede;
+
+
+        }else{
+            document.getElementById("nombreActualizar").disabled = true;
+            document.getElementById("apellidoActualizar").disabled = true;
+            document.getElementById("rolActualizar").disabled = true;
+            document.getElementById("sedeActualizar").disabled = true;
+
         }
     }
     )
