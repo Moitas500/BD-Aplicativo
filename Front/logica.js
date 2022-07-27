@@ -125,6 +125,7 @@ function IngresarPersonas(idPersona, nombre, apellido) {
         async: false,
         url: "http://localhost:8081/personas",
         type: 'POST',
+        contentType: "application/json; charset=utf-8",
         dataType: 'json',
         data : JSON.stringify({
             "idpersona": parseInt(idPersona),
@@ -151,11 +152,12 @@ function IngresarPersonal(idPersonal,idPersona,cargo, sede) {
         async: false,
         url: "http://localhost:8081/personal",
         type: 'POST',
+        contentType: "application/json; charset=utf-8",
         dataType: 'json',
         data : JSON.stringify({
             "idpersonal": idPersonal,
             "idpersona": {
-                "idpersona": idPersona
+                "idpersona": parseInt(idPersona)
             },
             "idcargo": {
                 "idcargo": cargo
@@ -288,10 +290,11 @@ function añadirListener() {
         var apellido = document.getElementById("apellidoCrear");
         var rol = document.getElementById("rolCrear");
         var sede = document.getElementById("sedeCrear");
+        console.log(nombre);
         console.log(rol.value);
         console.log(sede.value);
-        IngresarPersonas(idPersona, nombre, apellido);
-        //  IngresarPersonal(idPersonal,idPersona, rol.value, sede.value);
+        IngresarPersonas(idPersona.value, nombre.value, apellido.value);
+        IngresarPersonal(idPersonal.value, idPersona.value, rol.value, sede.value);
 
 
         if (rol.value == "0" || sede.value == "0") {
