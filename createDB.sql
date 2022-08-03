@@ -928,3 +928,4 @@ alter table RESPONSABLE
    add constraint FK_RESPONSA_ROL_RESPO_ROL foreign key (IDROL)
       references ROL (IDROL);
 
+
