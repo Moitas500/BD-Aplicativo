@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="es">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>CRUD empleados</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="syles.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="login.html">Modulo de asistencia</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <button type="button" id="asistDocenteBoton" class="btn btn-outline-primary">Asistencia docente</button>
+                        </li>
+                        <li class="nav-item">
+                            <button type="button" id="asistPasanteBoton" class="btn btn-outline-primary">Asistencia pasante</button>
+                        </li>
+                        <li class="nav-item">
+                            <button type="button" id="asistEquipoBoton" class="btn btn-outline-primary">Asistencia equipo</button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container" id = "docenteContainer">
+            <div>
+                <h4>Datos del docente</h4>
+            </div>
+            <form id = "loginForm">
+                <div class="mb-3">
+                  <div class="mb-3">
+                    <label for="codigo" class="form-label">Nombre del docente</label>
+                    <input type="text" class="form-control" id="nombreDocente" placeholder="Digite el nombre del docente" required >
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                    <div class="mb-3">
+                      <label for="codigo" class="form-label">Apellido del docente</label>
+                      <input type="text" class="form-control" id="apellidoDocente" placeholder="Digite el apellido del docente" required >
+                    </div>
+                  </div>
+  
+                <div>
+                  <button type="button" class="btn btn-primary" id = "enviarDocente">Enviar</button>
+                </div>
+              </form>
+          </div>
+        </div>
+
+        <div class="container" id = "estudianteContainer">
+            <div>
+                <h4>Datos del estudiante</h4>
+            </div>
+            <form id = "loginForm">
+                <div class="mb-3">
+                  <div class="mb-3">
+                    <label for="codigo" class="form-label">Codigo del estudiante</label>
+                    <input type="text" class="form-control" id="nombreEstudiante" placeholder="Digite el codigo del estudiante" required >
+                  </div>
+                </div>
+  
+                <div>
+                  <button type="button" class="btn btn-primary" id = "enviarEstudiante">Enviar</button>
+                </div>
+              </form>
+          </div>
+        </div>
+
+        <div class="container" id = "miembroEquipoContainer">
+            <div>
+                <h4>Datos del estudiante</h4>
+            </div>
+            <form id = "loginForm">
+                <div class="mb-3">
+                  <div class="mb-3">
+                    <label for="codigo" class="form-label">Codigo del estudiante</label>
+                    <input type="text" class="form-control" id="codigoEstudiante" placeholder="Digite el codigo del estudiante" required >
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                    <div class="mb-3">
+                      <label for="codigo" class="form-label">Equipo</label>
+                      <input type="text" class="form-control" id="nombreEquipo" placeholder="Digite el nombre del equipo" required >
+                    </div>
+                </div>
+  
+                <div>
+                  <button type="button" class="btn btn-primary" id = "enviarEquipo">Enviar</button>
+                </div>
+              </form>
+          </div>
+        </div>
+
+        <script src="logicaAuxiliar.js"></script>
+    </body>
+</html>
