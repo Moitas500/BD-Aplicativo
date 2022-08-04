@@ -1,0 +1,32 @@
+from django.urls import path
+from core.api.api import *
+
+urlpatterns = [
+    path('actividad/', ActividadAPIView.as_view(), name = 'actividad_api'),
+    path('rol/', RolAPIView.as_view(), name = 'rol_api'),
+    path('cargo/', CargoAPIView.as_view(), name = 'cargo_api'),
+    path('deporte/', DeporteAPIView.as_view(), name = 'deporte_api'),
+    path('deporteTipoElemento/', DeporteTipoelementoAPIView.as_view(), name = 'deporte_tipoelemento_api'),
+    path('dia/', DiaAPIView.as_view(), name = 'dia_api'),
+    path('elemento/', ElementoAPIView.as_view(), name = 'elemento_api'),
+    path('empleado/', EmpleadoAPIView.as_view(), name = 'empleado_api'),
+    path('equipo/', EquipoAPIView.as_view(), name = 'equipo_api'),
+    path('tipoEspacio/', TipoespacioAPIView.as_view(), name = 'tipoEspacio_api'),
+    path('espacio/', EspacioAPIView.as_view(), name = 'espacio_api'),
+    path('empleadoCargo/', EmpleadoCargoAPIView.as_view(), name = 'empleadoCargo_api'),
+    path('espacioDeporte/', EspacioDeporteAPIView.as_view(), name = 'espacioDeporte_api'),
+    path('estado/', EstadoAPIView.as_view(), name = 'estado_api'),
+    path('estudiante/', EstudianteAPIView.as_view(), name = 'Estudiante_api'),
+    path('hora/', HoraAPIView.as_view(), name = 'hora_api'),
+    path('inscritoPraclibre/', InscritopraclibreAPIView.as_view(), name = 'inscritoPracLibre_api'),
+    path('marca/', MarcaAPIView.as_view(), name = 'marca_api'),
+    path('miembroEquipo/', MiembroequipoAPIView.as_view(), name = 'miembroEquipo_api'),
+    path('periodo/', PeriodoAPIView.as_view(), name = 'periodo_api'),
+    path('programacion/', ProgramacionAPIView.as_view(), name = 'programacion_api'),
+    path('tipoElemento/', TipoelementoAPIView.as_view(), name = 'tipoElemento_api'),
+    path('responsable/', ResponsableAPIView.as_view(), name = 'responsable_api'),
+    path('asistenciaResponsable/', AsistenresponsableAPIView.as_view(), name = 'asisResponsable_api'),
+    path('asistenciaMiembro/', AsismiembroequipoAPIView.as_view(), name = 'asisMiembro_api'),
+    path('elemendeportivo/', ElemendeportivoAPIView.as_view(), name = 'elemendeportivo_api'),
+    path('prestamo/', PrestamoAPIView.as_view(), name = 'prestamo_api'),
+]
