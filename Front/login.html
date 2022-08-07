@@ -24,18 +24,18 @@
           <div>
               <h4>Login</h4>
           </div>
-          <form id = "loginForm">
+          <form action="vistaAuxiliar.html" id = "loginForm" method="GET">
               <div class="mb-3">
                 <div class="mb-3">
                   <label for="codigo" class="form-label">Codigo empleado</label>
-                  <input type="text" class="form-control" id="codigo" placeholder="Digite su codigo" required >
+                  <input type="text" class="form-control" name = "codigo" id="codigo" placeholder="Digite su codigo" required >
                 </div>
               </div>
 
               <div>
-                <button type="button" class="btn btn-primary" id = "enviarLogin">Enviar</button>
+                <button type="submit" class="btn btn-primary" id = "enviarLogin">Enviar</button>
               </div>
-            </form>
+          </form>
         </div>
 
         <script src="logicaLogin.js"></script>
