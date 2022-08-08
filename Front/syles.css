@@ -5,3 +5,7 @@
 .container{
     margin-top: 50px;
 }
+
+#tablaDatosDocente, #tablaDatosEstudiante{
+    margin-top: 50px;
+}

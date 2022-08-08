@@ -50,6 +50,8 @@ function añadirListener(){
         }else{
             $("#miembroEquipoContainer").hide();
             $("#estudianteContainer").hide();
+            $("#tablaDatosDocente").hide();
+            $("#tablaDatosEstudiante").hide();
             $("#docenteContainer").show();
 
             mostrado = true;
@@ -64,6 +66,8 @@ function añadirListener(){
         }else{
             $("#miembroEquipoContainer").hide();
             $("#docenteContainer").hide();
+            $("#tablaDatosDocente").hide();
+            $("#tablaDatosEstudiante").hide();
             $("#estudianteContainer").show();
 
             mostrado = true;
@@ -78,6 +82,8 @@ function añadirListener(){
         }else{
             $("#docenteContainer").hide();
             $("#estudianteContainer").hide();
+            $("#tablaDatosDocente").hide();
+            $("#tablaDatosEstudiante").hide();
             $("#miembroEquipoContainer").show();
 
             mostrado = true;
@@ -92,18 +98,48 @@ function añadirListener(){
         if(nombreDocente.value == "" || apellidoDocente.value == ""){
             alert("Verifique las casillas");
         }else{
-            //Todas las consultas
+            var i = 0;
+            while(i < empleados.length){
+                var empleado = empleados[i];
+
+                if(nombreDocente.value == empleado.codempleado.nomempleado && apellidoDocente.value == empleado.codempleado.apelempleado){
+                    if(empleado.idcargo.descargo == "Docente"){ 
+                        asistenteDocente(empleado);
+                    }else{
+                        alert("El nombre y apellido digitado no corresponde a un docente");
+                        break;
+                    }
+                }
+                i++;
+            }
         }
     })
 
     var btnEnviarPasante = document.getElementById("enviarEstudiante");
     btnEnviarPasante.addEventListener("click", function () {
-        var nombreEstudiante = document.getElementById("nombreEstudiante");
+        var codigoEstudiante = document.getElementById("nombreEstudiante");
 
-        if(nombreEstudiante.value == ""){
+        if(codigoEstudiante.value == ""){
             alert("Verifique las casillas");
         }else{
-            //Consultas
+            var codigo = document.getElementById("nombreEstudiante");
+            var estudiante;
+
+            $.ajax({
+                async: false,
+                url: "http://127.0.0.1:8000/estudiante/" + codigo.value,
+                type: 'GET',
+                dataType: 'json',
+                success: function (res) {
+                    estudiante = res
+                },
+            })
+
+            if(codigoEstudiante.value == estudiante.codestudiante){
+                asistenciaPasante(estudiante);
+            }else{
+                alert("El codigo digitado no pertenece a ningún estudiante");
+            }   
         }
     })
 
@@ -120,12 +156,57 @@ function añadirListener(){
     })
 }
 
+function asistenteDocente(empleado){
+    var nombreDocente  = empleado.codempleado.nomempleado;
+    var apellidoDocente = empleado.codempleado.apelempleado;
+    var sedeDocente = empleado.codespacio.nomespacio;
+    var today = new Date();
+    var now = today.toLocaleString();
+    var programacion;
+
+    document.getElementById("thNombreDocente").textContent = nombreDocente;
+    document.getElementById("thApellidoDocente").textContent = apellidoDocente;
+    document.getElementById("thSedeDocente").textContent = sedeDocente;
+    document.getElementById("thFecha").textContent = now;
+
+    $.ajax({
+        async: false,
+        url: "http://127.0.0.1:8000/programacion/",
+        type: 'GET',
+        dataType: 'json',
+        success: function (res) {
+            programacion = res
+        },
+    })
+
+    console.log(programacion);
+
+    $("#tablaDatosDocente").show();
+}
+
+function asistenciaPasante(estudiante){
+    var nombre = estudiante.nomestudiante;
+    var apellido = estudiante.apelestudiante;
+    var sede = estudiante.codespacio.nomespacio;
+    var today = new Date();
+    var now = today.toLocaleString();
+
+    document.getElementById("thNombreEstudiante").textContent = nombre;
+    document.getElementById("thApellidoEstudiante").textContent = apellido;
+    document.getElementById("thSedeEstudiante").textContent = sede;
+    document.getElementById("thFecha2").textContent = now;
+
+    $("#tablaDatosEstudiante").show();
+}
+
 function init(){
     añadirListener();
     mostrarDatos();
     $("#docenteContainer").hide();
     $("#estudianteContainer").hide();
     $("#miembroEquipoContainer").hide();
+    $("#tablaDatosDocente").hide();
+    $("#tablaDatosEstudiante").hide();
 }
 
 init();
