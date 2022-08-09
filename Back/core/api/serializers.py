@@ -110,6 +110,8 @@ class MarcaSerializer(serializers.ModelSerializer):
         fields = '__all__'
         
 class MiembroequipoSerializer(serializers.ModelSerializer):
+    codestudiante = EstudianteSerializer()
+    conseequipo = EquipoSerializer()
     class Meta:
         model = Miembroequipo
         fields = '__all__'

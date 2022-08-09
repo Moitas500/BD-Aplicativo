@@ -200,7 +200,17 @@ def miembroEquipo_api_view(request):
         miembroequipo = Miembroequipo.objects.all()
         miembroequipo_serializer = MiembroequipoSerializer(miembroequipo, many = True)
         return Response(miembroequipo_serializer.data)
-        
+    
+@api_view(['GET'])
+def miembroEquipo_detail_view(request, Estu=None,  Equi=None):
+    if request.method == 'GET':
+        estudiante = Estudiante.objects.get(codestudiante=Estu)
+        equipo = Equipo.objects.get(conseequipo=Equi)
+
+        miembroEquipo = Miembroequipo.objects.filter(codestudiante=estudiante, conseequipo=equipo)
+        miembroEquipo_serializer = MiembroequipoSerializer(miembroEquipo, many = True)
+        return Response(miembroEquipo_serializer.data)
+    
 @api_view(['GET', 'POST'])
 def periodo_api_view(request):
     if request.method == 'GET':
