@@ -52,6 +52,7 @@ function añadirListener(){
             $("#estudianteContainer").hide();
             $("#tablaDatosDocente").hide();
             $("#tablaDatosEstudiante").hide();
+            $("#tablaDatosEquipo").hide();
             $("#docenteContainer").show();
 
             mostrado = true;
@@ -68,6 +69,7 @@ function añadirListener(){
             $("#docenteContainer").hide();
             $("#tablaDatosDocente").hide();
             $("#tablaDatosEstudiante").hide();
+            $("#tablaDatosEquipo").hide();
             $("#estudianteContainer").show();
 
             mostrado = true;
@@ -84,6 +86,7 @@ function añadirListener(){
             $("#estudianteContainer").hide();
             $("#tablaDatosDocente").hide();
             $("#tablaDatosEstudiante").hide();
+            $("#tablaDatosEquipo").hide();
             $("#miembroEquipoContainer").show();
 
             mostrado = true;
@@ -104,7 +107,7 @@ function añadirListener(){
 
                 if(nombreDocente.value == empleado.codempleado.nomempleado && apellidoDocente.value == empleado.codempleado.apelempleado){
                     if(empleado.idcargo.descargo == "Docente"){ 
-                        asistenteDocente(empleado);
+                        asistenteDocente(empleado,empleados);
                     }else{
                         alert("El nombre y apellido digitado no corresponde a un docente");
                         break;
@@ -146,14 +149,87 @@ function añadirListener(){
     var btnEnviarEquipo = document.getElementById("enviarEquipo");
     btnEnviarEquipo.addEventListener("click", function () {
         var codigoEstudiante = document.getElementById("codigoEstudiante");
-        var nombreEquipo = document.getElementById("nombreEquipo");
+        var codigoEquipo = document.getElementById("nombreEquipo");
 
-        if(codigoEstudiante.value == "" || nombreEquipo.value == ""){
+        if(codigoEstudiante.value == "" || codigoEquipo.value == ""){
             alert("Verifique las casillas");
         }else{
-            //Consultas
+            var miembroEquipo;
+            var estudiante;
+            var equipos;
+
+            $.ajax({
+                async: false,
+                url: "http://127.0.0.1:8000/estudiante/" + codigoEstudiante.value,
+                type: 'GET',
+                dataType: 'json',
+                success: function (res) {
+                    estudiante = res
+                },
+            })
+
+            $.ajax({
+                async: false,
+                url: "http://127.0.0.1:8000/equipo/",
+                type: 'GET',
+                dataType: 'json',
+                success: function (res) {
+                    equipos = res
+                },
+            })
+
+            if(estudiante.codestudiante == "" || codigoEquipo > equipos.length){
+                alert("Los datos son invalidos");
+            }else{
+                var equipo = equipos[codigoEquipo.value];
+                var miembroEquipo;
+
+                $.ajax({
+                    async: false,
+                    url: "http://127.0.0.1:8000/miembroEquipo/" + estudiante.codestudiante + "/" + equipo.conseequipo,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function (res) {
+                        miembroEquipo = res
+                    },
+                })
+
+                if(miembroEquipo.length == 0){
+                    alert("El estudiante no pertenece al equipo digitado");
+                }else{
+                    asistenciaMiembroEquipo(miembroEquipo);
+                }
+            }
         }
     })
+}
+
+function asistenciaMiembroEquipo(miembroEquipo){
+    var nombreEquipo = miembroEquipo[0].codestudiante.nomestudiante;
+    var apellidoEquipo = miembroEquipo[0].codestudiante.apelestudiante;
+    var sedeEquipo = miembroEquipo[0].codestudiante.codespacio.nomespacio;
+    var today = new Date();
+    var now = today.toLocaleString();
+    var programacion;
+    var hora  = now.split(',');
+    hora = hora[1].split(' ');
+
+    document.getElementById("thNombreEquipo").textContent = nombreEquipo;
+    document.getElementById("thApellidoEquipo").textContent = apellidoEquipo;
+    document.getElementById("thSedeEquipo").textContent = sedeEquipo;
+    document.getElementById("thFecha3").textContent = now;
+
+    $.ajax({
+        async: false,
+        url: "http://127.0.0.1:8000/programacion/",
+        type: 'GET',
+        dataType: 'json',
+        success: function (res) {
+            programacion = res
+        },
+    })
+
+    $("#tablaDatosEquipo").show();
 }
 
 function asistenteDocente(empleado){
@@ -163,6 +239,9 @@ function asistenteDocente(empleado){
     var today = new Date();
     var now = today.toLocaleString();
     var programacion;
+    var hora  = now.split(',');
+    var responsable;
+    hora = hora[1].split(' ');
 
     document.getElementById("thNombreDocente").textContent = nombreDocente;
     document.getElementById("thApellidoDocente").textContent = apellidoDocente;
@@ -179,7 +258,27 @@ function asistenteDocente(empleado){
         },
     })
 
-    console.log(programacion);
+    $.ajax({
+        async: false,
+        url: "http://127.0.0.1:8000/responsable/",
+        type: 'GET',
+        dataType: 'json',
+        success: function (res) {
+            responsable = res
+        },
+    })
+
+    var i = 0;
+
+    while(i < responsable.length){
+        var res = responsable[i];
+
+        if(res.codempleado.nomempleado == nombreDocente){
+            break;
+        }
+
+        i++;
+    }
 
     $("#tablaDatosDocente").show();
 }
@@ -190,11 +289,24 @@ function asistenciaPasante(estudiante){
     var sede = estudiante.codespacio.nomespacio;
     var today = new Date();
     var now = today.toLocaleString();
+    var programacion;
+    var hora  = now.split(',');
+    hora = hora[1].split(' ');
 
     document.getElementById("thNombreEstudiante").textContent = nombre;
     document.getElementById("thApellidoEstudiante").textContent = apellido;
     document.getElementById("thSedeEstudiante").textContent = sede;
     document.getElementById("thFecha2").textContent = now;
+
+    $.ajax({
+        async: false,
+        url: "http://127.0.0.1:8000/programacion/",
+        type: 'GET',
+        dataType: 'json',
+        success: function (res) {
+            programacion = res
+        },
+    })
 
     $("#tablaDatosEstudiante").show();
 }
@@ -207,6 +319,7 @@ function init(){
     $("#miembroEquipoContainer").hide();
     $("#tablaDatosDocente").hide();
     $("#tablaDatosEstudiante").hide();
+    $("#tablaDatosEquipo").hide();
 }
 
 init();
