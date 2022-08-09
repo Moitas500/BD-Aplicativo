@@ -31,6 +31,7 @@ urlpatterns = [
     path('miembroEquipo/<str:Estu>/<str:Equi>', miembroEquipo_detail_view, name = 'miembroEquipo_api'),
     path('periodo/', periodo_api_view, name = 'periodo_api'),
     path('programacion/', programacion_api_view, name = 'programacion_api'),
+    path('programacion/<str:pk>', programacion_detail_view, name = 'programacion_api'),
     path('tipoElemento/', tipoElemento_api_view, name = 'tipoElemento_api'),
     path('responsable/', responsable_api_view, name = 'responsable_api'),
     path('asistenciaResponsable/', asistenResponsable_api_view, name = 'asisResponsable_api'),

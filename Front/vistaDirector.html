@@ -13,7 +13,7 @@
     <body>
         <nav class="navbar navbar-expand-lg bg-light">
             <div class="container-fluid">
-                <a class="navbar-brand" href="login.html">Modulo de asistencia</a>
+                <a class="navbar-brand" href="login.html">Modulo de asistencia - Director</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -30,11 +30,32 @@
             </div>
         </nav>
 
+        <script type="text/javascript">
+            function startTime(){
+              today=new Date();
+              now = today.toLocaleString();
+              h=today.getHours();
+              m=today.getMinutes();
+              s=today.getSeconds();
+              m=checkTime(m);
+              s=checkTime(s);
+              document.getElementById('fecha-hora').innerHTML='<b>Fecha actual:</b> ' + now;;
+              t=setTimeout('startTime()',500);
+            }
+            function checkTime(i){
+              if (i<10) {i="0" + i;}
+              return i;
+            }
+            window.onload=function(){startTime();}
+        </script>
+
         <div class = "container" id = "datosAuxiliar">
-            <div> <h4 id = "nombreDirector"> Nombre y apellido del director </h4></div>
-            <div> <h4 id = "sedeDirector"> Sede del director </h4></div>
-            <div> <h4 id = "fecha-hora"> Fecha y hora </h4></div>
+          <div style="display: flex; justify-content: space-between;">
+             <h4 id = "nombreDirector"> Nombre y apellido del director </h4>
+             <h4 id = "sedeDirector"> Sede del director </h4>
+             <h4 id = "fecha-hora"> Fecha y hora </h4>
           </div>
+        </div>
 
         <div class="container" id = "crearContainer">
            

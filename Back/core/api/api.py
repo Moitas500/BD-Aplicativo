@@ -231,7 +231,23 @@ def programacion_api_view(request):
         programacion = Programacion.objects.all()
         programacion_serializer = ProgramacionSerializer(programacion, many = True)
         return Response(programacion_serializer.data)
+
+@api_view(['GET', 'PUT'])
+def programacion_detail_view(request, pk=None):
+    if request.method == 'GET':
+        programacion = Programacion.objects.filter(consecprogramacion = pk).first()
+        programacion_serializer = ProgramacionSerializer(programacion)
+        return Response(programacion_serializer.data)
+    
+    elif request.method == 'PUT':
+        programacion = Programacion.objects.filter(consecprogramacion = pk).first()
+        programacion_serializer = ProgramacionSerializer(programacion, data=request.data)
+        if programacion_serializer.is_valid():
+            programacion_serializer.save()
+            return Response(programacion_serializer.data)
+        return Response(programacion_serializer.errors)
         
+     
 @api_view(['GET', 'POST'])
 def responsable_api_view(request):
     if request.method == 'GET':

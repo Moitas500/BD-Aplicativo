@@ -31,6 +31,7 @@ function añadirListener(){
 
         if(encontrado){
             var formulario = document.getElementById("loginForm");
+            debugger
             //Diferenciar si es axuliar o director
             if(empleados[i].idcargo.descargo == "Director Deportivo"){
                 empleado = empleados[i];
@@ -38,6 +39,9 @@ function añadirListener(){
             }else if(empleados[i].idcargo.descargo == "Auxiliar"){
                 empleado = empleados[i];
                 formulario.setAttribute('action', 'vistaAuxiliar.html');
+            } else {
+                alert("El usuario no tiene permisos para acceder a este modulo");
+                formulario.setAttribute('action', 'login.html');
             }
         }
     })

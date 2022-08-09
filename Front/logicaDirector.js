@@ -33,9 +33,9 @@ function mostrarDatos(){
     var apellido = empleado.codempleado.apelempleado;
     var sede =  empleado.codespacio.nomespacio;
 
-    document.getElementById("fecha-hora").textContent = now;
-    document.getElementById("nombreDirector").textContent = nombre + " " +apellido;
-    document.getElementById("sedeDirector").textContent = sede;
+    document.getElementById("fecha-hora").innerHTML = '<b>Fecha actual:</b> ' + now;
+    document.getElementById("nombreDirector").innerHTML = '<b>Empleado:</b> ' + nombre + " " +apellido;
+    document.getElementById("sedeDirector").innerHTML = '<b>Sede:</b> ' + sede;
 
     console.log(empleados);
 }
