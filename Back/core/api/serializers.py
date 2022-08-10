@@ -127,8 +127,6 @@ class ProgramacionSerializer(serializers.ModelSerializer):
     iddeporte = DeporteSerializer()
     codespacio = EspacioSerializer()
     iddia = DiaSerializer()
-    idhora_fin = HoraSerializer()
-    idhora_ini = HoraSerializer()
     class Meta:
         model = Programacion
         fields = '__all__'
@@ -139,6 +137,7 @@ class TipoelementoSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class ResponsableSerializer(serializers.ModelSerializer):
+    consecprogramacion = ProgramacionSerializer()
     idrol = RolSerializer()
     codempleado = EmpleadoSerializer()
     codestudiante = EstudianteSerializer()

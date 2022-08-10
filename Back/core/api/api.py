@@ -2,6 +2,7 @@ from urllib import request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
+from rest_framework import status
 from core.models import *
 from core.api.serializers import *
 
@@ -21,10 +22,13 @@ def actividad_api_view(request):
     
 @api_view(['GET'])
 def actividad_detail_view(request, pk=None):
-    if request.method == 'GET':
-        actividad = Actividad.objects.filter(idactividad = pk).first()
-        actividad_serializer = ActividadSerializer(actividad)
-        return Response(actividad_serializer.data)
+    actividad = Actividad.objects.filter(idactividad = pk).first()
+    if actividad:
+        if request.method == 'GET':
+            actividad_serializer = ActividadSerializer(actividad)
+            return Response(actividad_serializer.data)
+    else:
+        return Response({'message':'No se encuentra la actividad con estos datos'}, status=status.HTTP_404_NOT_FOUND)
         
 @api_view(['GET', 'POST'])
 def asisMiembroEquipo_api_view(request):
@@ -105,10 +109,14 @@ def empleadoCargo_api_view(request):
     
 @api_view(['GET'])
 def empleadoCargo_detail_view(request, pk=None):
-    if request.method == 'GET':
-        empleadoCargo = EmpleadoCargo.objects.filter(codempleado = pk).order_by('fechacargo').first()
-        empleadoCargo_serializer = EmpleadoCargoSerializer(empleadoCargo)
-        return Response(empleadoCargo_serializer.data)
+    empleadoCargo = EmpleadoCargo.objects.filter(codempleado = pk).order_by('fechacargo').first()
+    if empleadoCargo:
+        if request.method == 'GET':
+            empleadoCargo_serializer = EmpleadoCargoSerializer(empleadoCargo)
+            return Response(empleadoCargo_serializer.data)
+    else:
+        return Response({'message':'No se encuentra el empleado con estos datos'}, status=status.HTTP_404_NOT_FOUND)
+    
         
 @api_view(['GET', 'POST'])
 def equipo_api_view(request):
@@ -119,10 +127,13 @@ def equipo_api_view(request):
         
 @api_view(['GET'])
 def equipo_detail_view(request, pk=None):
-    if request.method == 'GET':
-        equipo = Equipo.objects.filter(conseequipo = pk).first()
-        equipo_serializer = EquipoSerializer(equipo)
-        return Response(equipo_serializer.data)
+    equipo = Equipo.objects.filter(conseequipo = pk).first()
+    if equipo:
+        if request.method == 'GET':
+            equipo_serializer = EquipoSerializer(equipo)
+            return Response(equipo_serializer.data)
+    else:
+        return Response({'message':'No se encuentra el equipo con estos datos'}, status=status.HTTP_404_NOT_FOUND)
     
 @api_view(['GET', 'POST'])
 def espacio_api_view(request):
@@ -203,13 +214,16 @@ def miembroEquipo_api_view(request):
     
 @api_view(['GET'])
 def miembroEquipo_detail_view(request, Estu=None,  Equi=None):
-    if request.method == 'GET':
-        estudiante = Estudiante.objects.get(codestudiante=Estu)
+    estudiante = Estudiante.objects.get(codestudiante=Estu)
+    if estudiante:
         equipo = Equipo.objects.get(conseequipo=Equi)
-
-        miembroEquipo = Miembroequipo.objects.filter(codestudiante=estudiante, conseequipo=equipo)
-        miembroEquipo_serializer = MiembroequipoSerializer(miembroEquipo, many = True)
-        return Response(miembroEquipo_serializer.data)
+        if equipo:
+            miembroEquipo = Miembroequipo.objects.filter(codestudiante=estudiante, conseequipo=equipo)
+            if miembroEquipo:
+                if request.method == 'GET':
+                    miembroEquipo_serializer = MiembroequipoSerializer(miembroEquipo, many = True)
+                    return Response(miembroEquipo_serializer.data)
+    return Response({'message':'No se encuentra al miembro del equipo con estos datos'}, status=status.HTTP_404_NOT_FOUND)
     
 @api_view(['GET', 'POST'])
 def periodo_api_view(request):
@@ -234,27 +248,39 @@ def programacion_api_view(request):
 
 @api_view(['GET', 'PUT'])
 def programacion_detail_view(request, pk=None):
-    if request.method == 'GET':
-        programacion = Programacion.objects.filter(consecprogramacion = pk).first()
-        programacion_serializer = ProgramacionSerializer(programacion)
-        return Response(programacion_serializer.data)
-    
-    elif request.method == 'PUT':
-        programacion = Programacion.objects.filter(consecprogramacion = pk).first()
-        programacion_serializer = ProgramacionSerializer(programacion, data=request.data)
-        if programacion_serializer.is_valid():
-            programacion_serializer.save()
+    programacion = Programacion.objects.filter(consecprogramacion = pk).first()
+    if programacion:
+        if request.method == 'GET':
+            programacion_serializer = ProgramacionSerializer(programacion)
             return Response(programacion_serializer.data)
-        return Response(programacion_serializer.errors)
         
+        elif request.method == 'PUT':
+            programacion_serializer = ProgramacionSerializer(programacion, data=request.data)
+            if programacion_serializer.is_valid():
+                programacion_serializer.save()
+                return Response(programacion_serializer.data)
+            return Response(programacion_serializer.errors)
+    else:
+        return Response({'message':'No se encuentra la programación con estos datos'}, status=status.HTTP_404_NOT_FOUND)        
      
-@api_view(['GET', 'POST'])
+@api_view(['GET'])
 def responsable_api_view(request):
     if request.method == 'GET':
         responsable = Responsable.objects.all()
         responsable_serializer = ResponsableSerializer(responsable, many = True)
         return Response(responsable_serializer.data)
-        
+
+@api_view(['GET'])
+def responsable_detail_view(request, pk=None):
+
+    responsable = Responsable.objects.filter(codempleado = pk)
+    if responsable:
+        if request.method == 'GET':
+            # responsable = Responsable.objects.all()
+            responsable_serializer = ResponsableSerializer(responsable, many = True)
+            return Response(responsable_serializer.data)
+    return Response({'message':'No se encuentra al responsable con estos datos'}, status=status.HTTP_404_NOT_FOUND)
+    
 @api_view(['GET', 'POST'])
 def rol_api_view(request):
     if request.method == 'GET':

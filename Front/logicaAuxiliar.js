@@ -2,6 +2,36 @@ var mostrado = false;
 var empleados;
 var empleado;
 
+function Programaciones() {
+    var respuesta
+
+    $.ajax({
+        async: false,
+        url: "http://127.0.0.1:8000/programacion/",
+        type: 'GET',
+        dataType: 'json',
+        success: function (res) {
+            respuesta = res
+        },
+    })
+
+    return respuesta;
+}
+
+function ResponsableEmpleado(IDempleado){
+    var respuesta
+    $.ajax({
+        async: false,
+        url: "http://127.0.0.1:8000/responsableDoc/"+IDempleado,
+        type: 'GET',
+        dataType: 'json',
+        success: function (res) {
+            respuesta = res
+        },
+    })
+    return respuesta;
+}
+
 $.ajax({
     async: false,
     url: "http://127.0.0.1:8000/empleadoCargo/",
@@ -12,11 +42,7 @@ $.ajax({
     },
 })
 
-/**
- * @param String name
- * @return String
- */
- function getParameterByName(name) {
+function getParameterByName(name) {
     name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
     var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
     results = regex.exec(location.search);
@@ -102,18 +128,24 @@ function añadirListener(){
             alert("Verifique las casillas");
         }else{
             var i = 0;
+            var encontro = false;
             while(i < empleados.length){
                 var empleado = empleados[i];
 
-                if(nombreDocente.value == empleado.codempleado.nomempleado && apellidoDocente.value == empleado.codempleado.apelempleado){
+                if(nombreDocente.value.toLowerCase() == empleado.codempleado.nomempleado.toLowerCase()  && apellidoDocente.value.toLowerCase()  == empleado.codempleado.apelempleado.toLowerCase() ){
+                    encontro = true;
                     if(empleado.idcargo.descargo == "Docente"){ 
-                        asistenteDocente(empleado,empleados);
+                        asistenteDocente(empleado);
+                        break
                     }else{
                         alert("El nombre y apellido digitado no corresponde a un docente");
                         break;
                     }
                 }
                 i++;
+            }
+            if (!encontro){
+                alert("El nombre y apellido digitado no corresponde a un empleado");
             }
         }
     })
@@ -233,12 +265,13 @@ function asistenciaMiembroEquipo(miembroEquipo){
 }
 
 function asistenteDocente(empleado){
+    console.log(empleado)
     var nombreDocente  = empleado.codempleado.nomempleado;
     var apellidoDocente = empleado.codempleado.apelempleado;
     var sedeDocente = empleado.codespacio.nomespacio;
     var today = new Date();
     var now = today.toLocaleString();
-    var programacion;
+    var programacion = Programaciones();
     var hora  = now.split(',');
     var responsable;
     hora = hora[1].split(' ');
@@ -248,37 +281,13 @@ function asistenteDocente(empleado){
     document.getElementById("thSedeDocente").textContent = sedeDocente;
     document.getElementById("thFecha").textContent = now;
 
-    $.ajax({
-        async: false,
-        url: "http://127.0.0.1:8000/programacion/",
-        type: 'GET',
-        dataType: 'json',
-        success: function (res) {
-            programacion = res
-        },
-    })
+    responsable = ResponsableEmpleado(empleado.codempleado.codempleado)
 
-    $.ajax({
-        async: false,
-        url: "http://127.0.0.1:8000/responsable/",
-        type: 'GET',
-        dataType: 'json',
-        success: function (res) {
-            responsable = res
-        },
-    })
+    responsable.forEach(res => {
+        console.log(res)
 
-    var i = 0;
-
-    while(i < responsable.length){
-        var res = responsable[i];
-
-        if(res.codempleado.nomempleado == nombreDocente){
-            break;
-        }
-
-        i++;
-    }
+        // de aquie verificar si la fecha actual esta en el rango de inicio y fin
+    });
 
     $("#tablaDatosDocente").show();
 }
