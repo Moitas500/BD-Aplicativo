@@ -18,6 +18,77 @@ function Programaciones() {
     return respuesta;
 }
 
+function registrarAsistenciaMiembroEquipo(miembroEquipo, programacion) {
+    $.ajax({
+        async: false,
+        url: "http://localhost:8000/asistenciaMiembro/",
+        type: 'POST',
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify({
+            "consecprogramacion": programacion.consecprogramacion,
+            "conmiembroequipo": programacion.consecprogramacion + 1,
+            "conseequipo": miembroEquipo[0].conseequipo.conseequipo,
+            "itemmiembro": miembroEquipo[0].itemmiembro,
+        }),
+        success: function () {
+            alert("Asistencia registrada con exito")
+        },
+    })
+}
+
+function registrarAsistenciaDocente(responable) {
+    $.ajax({
+        async: false,
+        url: "http://localhost:8000/asistenciaResponsable/",
+        type: 'POST',
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify({
+            "consecprogramacion": responable.consecprogramacion.consecprogramacion,
+            "concecres": responable.concecres,
+            "consecasisres": responable.consecprogramacion.consecprogramacion,
+        }),
+        success: function () {
+            alert("Asistencia registrada con exito")
+        },
+    })
+}
+
+function registrarPrestamo(elemento, programacion) {
+    $.ajax({
+        async: false,
+        url: "http://localhost:8000/prestamo/",
+        type: 'POST',
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify({
+            "consecprogramacion": programacion.consecprogramacion.consecprogramacion,
+            "concecres": programacion.concecres,
+            "consecelemento": elemento.consecelemento,
+            "consecasisres": programacion.consecprogramacion.consecprogramacion,
+            "consecprestamo": programacion.consecprogramacion.consecprogramacion,
+        }),
+    })
+
+    $.ajax({
+        async: false,
+        url: "http://localhost:8000/elemendeportivo/" + elemento.consecelemento,
+        type: 'PUT',
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify({
+            "consecelemento": elemento.consecelemento,
+            "idestado": "2",
+            "idtipoelemento": elemento.idtipoelemento.idtipoelemento,
+            "idmarca": elemento.idmarca.idmarca,
+            "codespacio": elemento.codespacio.codespacio,
+            "fecharegistro": elemento.fecharegistro,
+        }),
+    })
+}
+
+
 function ResponsableEmpleado(IDempleado) {
     var respuesta
     $.ajax({
@@ -27,6 +98,37 @@ function ResponsableEmpleado(IDempleado) {
         dataType: 'json',
         success: function (res) {
             respuesta = res
+        },
+    })
+    return respuesta;
+}
+
+function ResponsablePasante(codEstudiante) {
+    var respuesta
+    $.ajax({
+        async: false,
+        url: "http://127.0.0.1:8000/responsableEst/" + codEstudiante,
+        type: 'GET',
+        dataType: 'json',
+        success: function (res) {
+            respuesta = res
+        },
+    })
+    return respuesta;
+}
+
+function ElementosDeporte(deporte, sede) {
+    var respuesta
+    $.ajax({
+        async: false,
+        url: "http://127.0.0.1:8000/elemendeportivo/" + deporte + "/" + sede,
+        type: 'GET',
+        dataType: 'json',
+        success: function (res) {
+            respuesta = res
+        },
+        error: function (res) {
+            respuesta = undefined
         },
     })
     return respuesta;
@@ -69,11 +171,7 @@ function añadirListener() {
     var btnAsistDocente = document.getElementById("asistDocenteBoton");
     btnAsistDocente.addEventListener("click", function () {
         if (!mostrado) {
-            
-           
-
             $("#docenteContainer").show();
-            
             mostrado = true;
         } else {
             $("#miembroEquipoContainer").hide();
@@ -90,7 +188,7 @@ function añadirListener() {
     var btnAsistPasante = document.getElementById("asistPasanteBoton");
     btnAsistPasante.addEventListener("click", function () {
         if (!mostrado) {
-          
+
             $("#estudianteContainer").show();
             mostrado = true;
         } else {
@@ -160,12 +258,12 @@ function añadirListener() {
         if (codigoEstudiante.value == "") {
             alert("Verifique las casillas");
         } else {
-            var codigo = document.getElementById("nombreEstudiante");
+            var codigo = document.getElementById("nombreEstudiante").value;
             var estudiante;
 
             $.ajax({
                 async: false,
-                url: "http://127.0.0.1:8000/estudiante/" + codigo.value,
+                url: "http://127.0.0.1:8000/estudiante/" + codigo,
                 type: 'GET',
                 dataType: 'json',
                 success: function (res) {
@@ -173,7 +271,7 @@ function añadirListener() {
                 },
             })
 
-            if (codigoEstudiante.value == estudiante.codestudiante) {
+            if (codigo == estudiante.codestudiante) {
                 asistenciaPasante(estudiante);
             } else {
                 alert("El codigo digitado no pertenece a ningún estudiante");
@@ -205,7 +303,7 @@ function añadirListener() {
 
             $.ajax({
                 async: false,
-                url: "http://127.0.0.1:8000/equipo/",
+                url: "http://127.0.0.1:8000/equipo/" + codigoEquipo.value,
                 type: 'GET',
                 dataType: 'json',
                 success: function (res) {
@@ -213,10 +311,10 @@ function añadirListener() {
                 },
             })
 
-            if (estudiante.codestudiante == "" || codigoEquipo > equipos.length) {
+            if (estudiante.codestudiante == "" || equipos == undefined) {
                 alert("Los datos son invalidos");
             } else {
-                var equipo = equipos[codigoEquipo.value];
+                var equipo = equipos;
                 var miembroEquipo;
 
                 $.ajax({
@@ -254,7 +352,7 @@ function asistenciaMiembroEquipo(miembroEquipo) {
     document.getElementById("thNombreEquipo").textContent = nombreEquipo;
     document.getElementById("thApellidoEquipo").textContent = apellidoEquipo;
     document.getElementById("thSedeEquipo").textContent = sedeEquipo;
-    document.getElementById("thFecha3").textContent = now;
+    document.getElementById("thEquipo").textContent = miembroEquipo[0].conseequipo.iddeporte.nomdeporte;
 
     $.ajax({
         async: false,
@@ -266,10 +364,11 @@ function asistenciaMiembroEquipo(miembroEquipo) {
         },
     })
 
+    var bandera = true;
     while (i < programacion.length) {
         var prog = programacion[i];
-
         if (prog.iddeporte.iddeporte == miembroEquipo[0].conseequipo.iddeporte.iddeporte) {
+            bander = false;
             var horaIni = prog.idhora_ini;
             var horaFin = prog.idhora_fin;
             horaIni = horaIni.split(':');
@@ -298,51 +397,14 @@ function asistenciaMiembroEquipo(miembroEquipo) {
 
         i++;
     }
+    if (bandera) {
+        alert("El equipo no tiene programado entrenamientos para este momento.")
+    }
 
     $("#tablaDatosEquipo").show();
 }
 
-function registrarAsistenciaMiembroEquipo(miembroEquipo, programacion) {
-    $.ajax({
-        async: false,
-        url: "http://localhost:8000/asistenciaMiembro/",
-        type: 'POST',
-        dataType: 'json',
-        contentType: "application/json; charset=utf-8",
-        data: JSON.stringify({
-            "consecprogramacion": programacion.consecprogramacion,
-            "conmiembroequipo": programacion.consecprogramacion + 1,
-            "conseequipo": miembroEquipo[0].conseequipo.conseequipo,
-            "itemmiembro": miembroEquipo[0].itemmiembro,
-        }),
-        success: function () {
-            alert("Asistencia registrada con exito")
-        },
-    })
-}
-
-function registrarAsistenciaDocente(responable) {
-    $.ajax({
-        async: false,
-        url: "http://localhost:8000/asistenciaResponsable/",
-        type: 'POST',
-        dataType: 'json',
-        contentType: "application/json; charset=utf-8",
-        data: JSON.stringify({
-            "consecprogramacion": responable.consecprogramacion.consecprogramacion,
-            "concecres": responable.concecres,
-            "consecasisres": responable.consecprogramacion.consecprogramacion,
-        }),
-        success: function () {
-            alert("Asistencia registrada con exito")
-        },
-    })
-}
-
 function asistenteDocente(empleado) {
-    var nombreDocente = empleado.codempleado.nomempleado;
-    var apellidoDocente = empleado.codempleado.apelempleado;
-    var sedeDocente = empleado.codespacio.nomespacio;
     var today = new Date();
     var now = today.toLocaleString();
     var hora = now.split(',');
@@ -350,240 +412,154 @@ function asistenteDocente(empleado) {
     hora = hora[1].split(':');
     var responsable;
 
-    document.getElementById("thNombreDocente").textContent = nombreDocente;
-    document.getElementById("thApellidoDocente").textContent = apellidoDocente;
-    document.getElementById("thSedeDocente").textContent = sedeDocente;
-    document.getElementById("thFecha").textContent = now;
-
     responsable = ResponsableEmpleado(empleado.codempleado.codempleado)
     bandera = false;
-    responsable.forEach(res => {
-        debugger
-        console.log(res)
+    for (let i = 0; i < responsable.length; i++) {
+        const res = responsable[i];
+
         var horaIni = res.consecprogramacion.idhora_ini;
         var horaFin = res.consecprogramacion.idhora_fin;
         horaIni = horaIni.split(':');
         horaFin = horaFin.split(':');
 
-        // if ((parseInt(horaIni[0])) <= parseInt(hora[0]) && (parseInt(horaFin[0])) >= parseInt(hora[0])) {
-        if ((parseInt(horaIni[0])) <= 11 && (parseInt(horaFin[0])) >= 11) {
-            registrarAsistenciaDocente(res)
+        if ((parseInt(horaIni[0])) <= parseInt(hora[0]) && (parseInt(horaFin[0])) >= parseInt(hora[0])) {
             bandera = true;
 
+            document.getElementById("thActividad").textContent = res.consecprogramacion.idactividad.descactividad;
+            document.getElementById("thespacio").textContent = res.consecprogramacion.codespacio.nomespacio;
+            document.getElementById("thDeporte").textContent = res.consecprogramacion.iddeporte.nomdeporte;
+            document.getElementById("thNEstudiantes").textContent = res.consecprogramacion.inscritos;
+            var elementos = ElementosDeporte(res.consecprogramacion.iddeporte.iddeporte, res.consecprogramacion.codespacio.codespacio);
 
+            var divElement = document.getElementById("elementos_mostrados");
+            for (i = 0; i < Object.keys(elementos).length; i++) {
 
-            //---------------------------------------------------------------------------------------------------
-            var elementos=[
-               
-                {
-                    "consecelemento": 7,
-                    "idestado": {
-                        "idestado": "1",
-                        "descestado": "Activo"
-                    },
-                    "idtipoelemento": {
-                        "idtipoelemento": "8",
-                        "desctipoelemento": "Guantes Box Especial"
-                    },
-                    "idmarca": {
-                        "idmarca": "70",
-                        "nommarca": "Kappa"
-                    },
-                    "codespacio": {
-                        "codespacio": "21",
-                        "esp_codespacio": {
-                            "codespacio": "2",
-                            "nomespacio": "Sede de ingenieria",
-                            "esp_codespacio": null,
-                            "idtipoespacio": "2"
-                        },
-                        "idtipoespacio": {
-                            "idtipoespacio": "5",
-                            "desctipoespacio": "Salon"
-                        },
-                        "nomespacio": "Salon I-601"
-                    },
-                    "fecharegistro": "2017-08-02"
-                }
-            ]
-            
-            var divElement= document.getElementById("elementos_mostrados");
-            for(i=0; i<Object.keys(elementos).length;i++){ 
-
-                if(elementos[i].idestado.idestado == "1"){
-                    
-                    var divCheck=document.createElement("div");
+                if (elementos[i].idestado.idestado == "1") {
+                    var divCheck = document.createElement("div");
                     divElement.classList.add("grid_3column");
-                    var check_element= document.createElement("input");
-                     // Assigning the attributes
-                     // to created checkbox
+                    var check_element = document.createElement("input");
+                    // Assigning the attributes
+                    // to created checkbox
                     check_element.type = "checkbox";
                     check_element.classList.add("form-check-input");
                     check_element.name = "elemento";
-                    check_element.value =  elementos[i].consecelemento;
-                    check_element.id = elementos[i].consecelemento+"-"+elementos[i].idtipoelemento.desctipoelemento;
-                
-    
+                    check_element.value = JSON.stringify(elementos[i]);
+                    check_element.id = elementos[i].consecelemento + "-" + elementos[i].idtipoelemento.desctipoelemento;
+
                     // creating label for checkbox
                     var label = document.createElement('label');
-                    label.appendChild(document.createTextNode(" "+ elementos[i].idtipoelemento.desctipoelemento));
+                    label.appendChild(document.createTextNode(" " + elementos[i].idtipoelemento.desctipoelemento));
                     divCheck.appendChild(check_element);
                     divCheck.appendChild(label);
                     divElement.appendChild(divCheck);
-                }   
-                
-                console.log(elementos[i].idtipoelemento.desctipoelemento);
+                }
             }
-            
-            var BtnElement= document.getElementById("enviarEle");
-            BtnElement.addEventListener("click", function(){
-                var Elements=document.querySelectorAll('input[name=elemento]:checked')
-                console.log(Array.from(Elements).map(checkbox => checkbox.value));
+
+            var BtnElement = document.getElementById("enviarEle");
+            BtnElement.addEventListener("click", function () {
+                var Elements = document.querySelectorAll('input[name=elemento]:checked');
+                elementos = Array.from(Elements).map(checkbox => JSON.parse(checkbox.value));
+
+                registrarAsistenciaDocente(res)
+                for (let i = 0; i < elementos.length; i++) {
+                    const elemento = elementos[i];
+                    registrarPrestamo(elemento, res);
+                }
+                location.reload();
             });
-            
-            //---------------------------------------------------------------------------------------------------
-
-
-
-
 
             $("#tablaDatosDocente").show();
-            // Comentariar
-            
+            break;
         }
-    });
+    };
 
-    if (!bandera) {
-        alert("No se puede realizar el procedimiento");
-    }
 }
 
 function asistenciaPasante(estudiante) {
     var nombre = estudiante.nomestudiante;
     var apellido = estudiante.apelestudiante;
-    var sede = estudiante.codespacio.nomespacio;
     var today = new Date();
     var now = today.toLocaleString();
-    var programacion;
     var hora = now.split(',');
-    var responsable;
     hora = hora[1].split(' ');
+    hora = hora[1].split(':');
+    var responsable;
 
     document.getElementById("thNombreEstudiante").textContent = nombre;
     document.getElementById("thApellidoEstudiante").textContent = apellido;
-    document.getElementById("thSedeEstudiante").textContent = sede;
-    document.getElementById("thFecha2").textContent = now;
+    responsable = ResponsablePasante(estudiante.codestudiante);
 
-    responsable = ResponsableEmpleado(empleado.codempleado.codempleado)
-
-    $.ajax({
-        async: false,
-        url: "http://127.0.0.1:8000/programacion/",
-        type: 'GET',
-        dataType: 'json',
-        success: function (res) {
-            programacion = res
-        },
-    })
-
-    responsable.forEach(res => {
-        console.log(res)
+    var bandera = true;
+    for (let i = 0; i < responsable.length; i++) {
+        const res = responsable[i];
         var horaIni = res.consecprogramacion.idhora_ini;
         var horaFin = res.consecprogramacion.idhora_fin;
-
-        if ((parseInt(horaIni[0])) == parseInt(hora[0])) {
+        debugger
+        if ((parseInt(horaIni[0])) == parseInt(hora[0]) || true) {
             var diferencia = 60 - parseInt(hora[1]);
 
-            if (diferencia <= 15) {
-                //Aqui devuelve todo
-            } else {
-                alert("No se puede realizar el procedimiento");
-            }
-        } else if (parseInt(horaIni[0]) == 9) {
-            var diferencia = 60 - parseInt(hora[1]);
+            if (diferencia <= 15 || true) {
+                bandera = false;
+                document.getElementById("thActividadEstudiante").textContent = res.consecprogramacion.idactividad.descactividad;
+                document.getElementById("thDeporteEstudiante").textContent = res.consecprogramacion.iddeporte.nomdeporte;
+                document.getElementById("thEspacioEstudiante").textContent = res.consecprogramacion.codespacio.nomespacio;
+                document.getElementById("thNumEstudiante").textContent = res.consecprogramacion.inscritos;
 
-            if (diferencia >= 45) {
-                //Aqui devuelve todo
+                $("#tablaDatosEstudiante").hide();
+                var elementos = ElementosDeporte(res.consecprogramacion.iddeporte.iddeporte, res.consecprogramacion.codespacio.codespacio);
+                if (elementos != undefined) {
+                    var divElement = document.getElementById("elementos_mostradosAux");
+                    for (i = 0; i < Object.keys(elementos).length; i++) {
+                        if (elementos[i].idestado.idestado == "1") {
+                            var divCheck = document.createElement("div");
+                            divElement.classList.add("grid_3column");
+                            var check_element = document.createElement("input");
+                            // Assigning the attributes
+                            // to created checkbox
+                            check_element.type = "checkbox";
+                            check_element.classList.add("form-check-input");
+                            check_element.name = "elemento";
+                            check_element.value = JSON.stringify(elementos[i]);
+                            check_element.id = elementos[i].consecelemento + "-" + elementos[i].idtipoelemento.desctipoelemento;
+
+                            // creating label for checkbox
+                            var label = document.createElement('label');
+                            label.appendChild(document.createTextNode(" " + elementos[i].idtipoelemento.desctipoelemento));
+                            divCheck.appendChild(check_element);
+                            divCheck.appendChild(label);
+                            divElement.appendChild(divCheck);
+                        }
+                    }
+
+                    var BtnElement = document.getElementById("enviarEleAux");
+                    BtnElement.addEventListener("click", function () {
+                        var Elements = document.querySelectorAll('input[name=elemento]:checked');
+                        elementos = Array.from(Elements).map(checkbox => JSON.parse(checkbox.value));
+
+                        registrarAsistenciaDocente(res)
+                        for (let i = 0; i < elementos.length; i++) {
+                            const elemento = elementos[i];
+                            registrarPrestamo(elemento, res);
+                        }
+                        location.reload();
+                    });
+                } else {
+                    // divCheck.replaceChildren(null);
+                    // divCheck.appendChild(label);
+                    // divElement.replaceChildren(null);
+                }
+
+                $("#tablaDatosEstudiante").show();
+                break;
             } else {
                 alert("No se puede realizar el procedimiento");
             }
         }
+    };
 
-
-
-
-          //----------------------------------------------------------------------------------------------
-        var elementos=[
-            {
-                "consecelemento": 7,
-                "idestado": {
-                    "idestado": "1",
-                    "descestado": "Activo"
-                },
-                "idtipoelemento": {
-                    "idtipoelemento": "8",
-                    "desctipoelemento": "Guantes Box Especial"
-                },
-                "idmarca": {
-                    "idmarca": "70",
-                    "nommarca": "Kappa"
-                },
-                "codespacio": {
-                    "codespacio": "21",
-                    "esp_codespacio": {
-                        "codespacio": "2",
-                        "nomespacio": "Sede de ingenieria",
-                        "esp_codespacio": null,
-                        "idtipoespacio": "2"
-                    },
-                    "idtipoespacio": {
-                        "idtipoespacio": "5",
-                        "desctipoespacio": "Salon"
-                    },
-                    "nomespacio": "Salon I-601"
-                },
-                "fecharegistro": "2017-08-02"
-            }
-        ]
-        
-        var divElement= document.getElementById("elementos_mostradosAux");
-        for(i=0; i<Object.keys(elementos).length;i++){ 
-
-            if(elementos[i].idestado.idestado == "1"){
-                
-                var divCheck=document.createElement("div");
-                divElement.classList.add("grid_3column");
-                var check_element= document.createElement("input");
-                 // Assigning the attributes
-                 // to created checkbox
-                check_element.type = "checkbox";
-                check_element.classList.add("form-check-input");
-                check_element.name = "elemento";
-                check_element.value =  elementos[i].consecelemento;
-                check_element.id = elementos[i].consecelemento+"-"+elementos[i].idtipoelemento.desctipoelemento;
-            
-
-                // creating label for checkbox
-                var label = document.createElement('label');
-                label.appendChild(document.createTextNode(" "+ elementos[i].idtipoelemento.desctipoelemento));
-                divCheck.appendChild(check_element);
-                divCheck.appendChild(label);
-                divElement.appendChild(divCheck);
-            }   
-            
-            console.log(elementos[i].idtipoelemento.desctipoelemento);
-        }
-        
-        var BtnElement= document.getElementById("enviarEleAux");
-        BtnElement.addEventListener("click", function(){
-            var Elements=document.querySelectorAll('input[name=elemento]:checked')
-            console.log(Array.from(Elements).map(checkbox => checkbox.value));
-        });
-    });
-
-        //---------------------------------------------------------------------------------------------
-        
-    $("#tablaDatosEstudiante").show();
+    if (bandera) {
+        alert("El estudiante no tiene espacios de pasante asignados para este momento.")
+    }
 }
 
 function init() {

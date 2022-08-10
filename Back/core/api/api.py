@@ -37,6 +37,7 @@ def asisMiembroEquipo_api_view(request):
         asismiembro = Asismiembroequipo.objects.all()
         asismiembro_serializer = AsismiembroequipoSerializer(asismiembro, many = True)
         return Response(asismiembro_serializer.data)
+    
     elif request.method == 'POST':
         asismiembro_serializer = AsismiembroequipoSerializer(data=request.data)
         if asismiembro_serializer.is_valid():
@@ -50,6 +51,12 @@ def asistenResponsable_api_view(request):
         asistenresponsable = Asistenresponsable.objects.all()
         asistenresponsable_serializer = AsistenresponsableSerializer(asistenresponsable, many = True)
         return Response(asistenresponsable_serializer.data)
+    elif request.method == 'POST':
+        asistenresponsable_serializer = AsistenresponsableSerializer(data=request.data)
+        if asistenresponsable_serializer.is_valid():
+            asistenresponsable_serializer.save()
+            return Response(asistenresponsable_serializer.data)
+        return Response(asistenresponsable_serializer.errors)
         
 @api_view(['GET', 'POST'])
 def cargo_api_view(request):
@@ -92,6 +99,29 @@ def elemenDeportivo_api_view(request):
         elemendeportivo = Elemendeportivo.objects.all()
         elemendeportivo_serializer = ElemendeportivoSerializer(elemendeportivo, many = True)
         return Response(elemendeportivo_serializer.data)
+
+@api_view(['GET'])
+def elemenDeportivo_detail_view(request, deporte=None, sede=None):
+    tipoElementos = deporte_tipoelemento.objects.filter(iddeporte=deporte)
+    if tipoElementos:
+        if request.method == 'GET':
+            elementos = any
+            for tipoElemento in tipoElementos.iterator():
+                elementos = Elemendeportivo.objects.filter(codespacio = sede, idtipoelemento=tipoElemento.idtipoelemento)
+                break
+            elemento_serializer = ElemendeportivoSerializer(elementos, many = True)
+            return Response(elemento_serializer.data)
+    return Response({'message':'No se encuentra el empleado con estos datos'}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['PUT'])
+def elemenDeportivo_updatel_view(request, elem=None):
+        if request.method == 'PUT':
+            elemento = Elemendeportivo.objects.filter(consecelemento=elem).first()
+            elemento_serializer = ElemendeportivoSerializerSinRef(elemento, data=request.data)
+            if elemento_serializer.is_valid():
+                elemento_serializer.save()
+                return Response(elemento_serializer.data)
+            return Response(elemento_serializer.errors)
 
 @api_view(['GET', 'POST'])
 def elemento_api_view(request):
@@ -245,6 +275,13 @@ def prestamo_api_view(request):
         prestamo = Prestamo.objects.all()
         prestamo_serializer = PrestamoSerializer(prestamo, many = True)
         return Response(prestamo_serializer.data)
+    
+    elif request.method == 'POST':
+        prestamo_serializer = PrestamoSerializerSinRef(data=request.data)
+        if prestamo_serializer.is_valid():
+            prestamo_serializer.save()
+            return Response(prestamo_serializer.data)
+        return Response(prestamo_serializer.errors)
         
 @api_view(['GET', 'POST'])
 def programacion_api_view(request):
@@ -280,7 +317,7 @@ def responsable_api_view(request):
 @api_view(['GET'])
 def responsableDoc_detail_view(request, pk=None):
     now = datetime.now()
-    responsable = Responsable.objects.filter(codempleado = pk, fechaini__gte=datetime(now.year, now.month, now.day))
+    responsable = Responsable.objects.filter(codempleado = pk)
     if responsable:
         if request.method == 'GET':
             responsable_serializer = ResponsableSerializer(responsable, many = True)
@@ -290,7 +327,7 @@ def responsableDoc_detail_view(request, pk=None):
 @api_view(['GET'])
 def responsableEst_detail_view(request, pk=None):
     now = datetime.now()
-    responsable = Responsable.objects.filter(codestudiante = pk, fechaini__gte=datetime(now.year, now.month, now.day))
+    responsable = Responsable.objects.filter(codestudiante = pk)
     if responsable:
         if request.method == 'GET':
             responsable_serializer = ResponsableSerializer(responsable, many = True)

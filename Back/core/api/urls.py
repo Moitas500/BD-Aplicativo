@@ -1,6 +1,6 @@
 from django.urls import path
 from core.api.api import *
-
+from core.views import *
 urlpatterns = [
     path('actividad/', actividad_api_view, name = 'actividad_api'),
     path('actividad/<str:pk>', actividad_detail_view, name = 'actividad_api'),
@@ -39,5 +39,8 @@ urlpatterns = [
     path('asistenciaResponsable/', asistenResponsable_api_view, name = 'asisResponsable_api'),
     path('asistenciaMiembro/', asisMiembroEquipo_api_view, name = 'asisMiembro_api'),
     path('elemendeportivo/', elemenDeportivo_api_view, name = 'elemendeportivo_api'),
+    path('elemendeportivo/<str:deporte>/<str:sede>', elemenDeportivo_detail_view, name = 'elemendeportivo_api'),
+    path('elemendeportivo/<str:elem>', elemenDeportivo_updatel_view, name = 'elemendeportivo_api'),
     path('prestamo/', prestamo_api_view, name = 'prestamo_api'),
+    path('reporteMiembros/', ListAsistenciaEquiposPdf.as_view(), name='reporteMiembros')
 ]

@@ -18,8 +18,8 @@ class Actividad(models.Model):
 
 
 class Asismiembroequipo(models.Model):
-    consecprogramacion = models.OneToOneField('Programacion', models.DO_NOTHING, db_column='consecprogramacion', primary_key=True)
-    conmiembroequipo = models.IntegerField()
+    consecprogramacion = models.OneToOneField('Programacion', models.DO_NOTHING, db_column='consecprogramacion')
+    conmiembroequipo = models.IntegerField(primary_key=True)
     conseequipo = models.ForeignKey('Miembroequipo', models.DO_NOTHING, db_column='conseequipo', related_name='conseequipo_article_set')
     itemmiembro = models.ForeignKey('Miembroequipo', models.DO_NOTHING, db_column='itemmiembro', related_name='itemmiembro_article_set')
 
@@ -30,11 +30,11 @@ class Asismiembroequipo(models.Model):
 
 
 class Asistenresponsable(models.Model):
-    consecprogramacion = models.OneToOneField('Responsable', models.DO_NOTHING, db_column='consecprogramacion', primary_key=True, related_name='consecprogramacion_article_set')
+    consecprogramacion = models.OneToOneField('Responsable', models.DO_NOTHING, db_column='consecprogramacion', related_name='consecprogramacion_article_set')
     concecres = models.ForeignKey('Responsable', models.DO_NOTHING, db_column='concecres', related_name='concecres_article_set')
-    consecasisres = models.IntegerField()
-    fechaasisres = models.DateField()
-    horaasisres = models.DateField()
+    consecasisres = models.IntegerField(primary_key=True)
+    fechaasisres = models.DateField(auto_now_add=True)
+    horaasisres = models.DateField(auto_now_add=True)
 
     class Meta:
         managed = False
@@ -215,8 +215,8 @@ class Marca(models.Model):
 
 
 class Miembroequipo(models.Model):
-    conseequipo = models.OneToOneField(Equipo, models.DO_NOTHING, db_column='conseequipo', primary_key=True)
-    itemmiembro = models.IntegerField()
+    conseequipo = models.OneToOneField(Equipo, models.DO_NOTHING, db_column='conseequipo', unique=True)
+    itemmiembro = models.IntegerField(primary_key=True)
     codestudiante = models.ForeignKey(Estudiante, models.DO_NOTHING, db_column='codestudiante')
 
     class Meta:

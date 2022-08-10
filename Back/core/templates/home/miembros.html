@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Asistencia miembro</title>
+</head>
+<body>
+    <h2>Lista de asistencia de miembros equipo</h2>
+    <table>
+        <thead>
+            <th>Programación</th>
+            <th>miembro</th>
+            <th>Equipo</th>
+            <th>Item</th>
+        </thead>
+        <tbody>
+            {% for miembro in miembros %}
+                <tr> 
+                    <td>{{ miembro.consecprogramacion }}</td>
+                    <td>{{ miembro.conmiembroequipo }}</td>
+                    <td>{{ miembro.conseequipo }}</td>
+                    <td>{{ miembro.itemmiembro }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+</html>

@@ -1,167 +1,204 @@
 <!DOCTYPE html>
 <html lang="es">
 
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>CRUD empleados</title>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-        <link rel="stylesheet" href="syles.css">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
-    </head>
-    <body>
-        <nav class="navbar navbar-expand-lg bg-light">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="login.html">Modulo de asistencia - Auxiliar</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
-                            <button type="button" id="asistDocenteBoton" class="btn btn-outline-primary">Asistencia docente</button>
-                        </li>
-                        <li class="nav-item">
-                            <button type="button" id="asistPasanteBoton" class="btn btn-outline-primary">Asistencia pasante</button>
-                        </li>
-                        <li class="nav-item">
-                            <button type="button" id="asistEquipoBoton" class="btn btn-outline-primary">Asistencia equipo</button>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-        <script type="text/javascript">
-          function startTime(){
-            today=new Date();
-            now = today.toLocaleString();
-            h=today.getHours();
-            m=today.getMinutes();
-            s=today.getSeconds();
-            m=checkTime(m);
-            s=checkTime(s);
-            document.getElementById('fecha-hora').innerHTML='<b>Fecha actual:</b> ' + now;;
-            t=setTimeout('startTime()',500);
-          }
-          function checkTime(i){
-            if (i<10) {i="0" + i;}
-            return i;
-          }
-          window.onload=function(){startTime();}
-        </script>
-          
-        <div class = "container" id = "datosAuxiliar">
-          <div style="display: flex; justify-content: space-between;">
-             <h4 id = "nombreAuxiliar"> Nombre y apellido del auxiliar </h4>
-             <h4 id = "sedeAuxiliar"> Sede del auxiliar </h4>
-             <h4 id = "fecha-hora"> Fecha y hora </h4>
-          </div>
-          <div id="elementos_mostradosAux">
-          </div>
-          <button class="btn btn-primary" id="enviarEleAux">Enviar elementos</button>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CRUD empleados</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="syles.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="login.html">Modulo de asistencia - Auxiliar</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <button type="button" id="asistDocenteBoton" class="btn btn-outline-primary">Asistencia docente</button>
+          </li>
+          <li class="nav-item">
+            <button type="button" id="asistPasanteBoton" class="btn btn-outline-primary">Asistencia pasante</button>
+          </li>
+          <li class="nav-item">
+            <button type="button" id="asistEquipoBoton" class="btn btn-outline-primary">Asistencia equipo</button>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <script type="text/javascript">
+    function startTime() {
+      today = new Date();
+      now = today.toLocaleString();
+      h = today.getHours();
+      m = today.getMinutes();
+      s = today.getSeconds();
+      m = checkTime(m);
+      s = checkTime(s);
+      document.getElementById('fecha-hora').innerHTML = '<b>Fecha actual:</b> ' + now;;
+      t = setTimeout('startTime()', 500);
+    }
+    function checkTime(i) {
+      if (i < 10) { i = "0" + i; }
+      return i;
+    }
+    window.onload = function () { startTime(); }
+  </script>
+
+  <div class="container" id="datosAuxiliar">
+    <div style="display: flex; justify-content: space-between;">
+      <h4 id="nombreAuxiliar"> Nombre y apellido del auxiliar </h4>
+      <h4 id="sedeAuxiliar"> Sede del auxiliar </h4>
+      <h4 id="fecha-hora"> Fecha y hora </h4>
+    </div>
+
+  </div>
+
+  <div class="container" id="docenteContainer">
+    <div>
+      <h4>Datos del docente</h4>
+    </div>
+    <form id="loginForm">
+      <div class="mb-3">
+        <div class="mb-3">
+          <label for="codigo" class="form-label">Nombre del docente</label>
+          <input type="text" class="form-control" id="nombreDocente" placeholder="Digite el nombre del docente"
+            required>
         </div>
+      </div>
 
-        <div class="container" id = "docenteContainer">
-            <div>
-                <h4>Datos del docente</h4>
-            </div>
-            <form id = "loginForm">
-                <div class="mb-3">
-                  <div class="mb-3">
-                    <label for="codigo" class="form-label">Nombre del docente</label>
-                    <input type="text" class="form-control" id="nombreDocente" placeholder="Digite el nombre del docente" required >
-                  </div>
-                </div>
-
-                <div class="mb-3">
-                    <div class="mb-3">
-                      <label for="codigo" class="form-label">Apellido del docente</label>
-                      <input type="text" class="form-control" id="apellidoDocente" placeholder="Digite el apellido del docente" required >
-                    </div>
-                  </div>
-  
-                <div>
-                  <button type="button" class="btn btn-primary" id = "enviarDocente">Enviar</button>
-                </div>
-              </form>
-
-              <table class = "table" id = "tablaDatosDocente">
-                <thead>
-                  <th id="thNombreDocente" scope="col">Nombre docente</th>
-                  <th id="thApellidoDocente" scope="col">Apellido docete</th>
-                  <th id="thSedeDocente" scope="col">Sede docente</th>
-                  <th id="thFecha" scope="col">Fecha</th>
-                </thead>
-              </table>
-              <h1>Elementos: </h1>
-              <div id="elementos_mostrados">
-              </div>
-              <button class="btn btn-primary" id="enviarEle">Enviar elementos</button>
+      <div class="mb-3">
+        <div class="mb-3">
+          <label for="codigo" class="form-label">Apellido del docente</label>
+          <input type="text" class="form-control" id="apellidoDocente" placeholder="Digite el apellido del docente"
+            required>
         </div>
+      </div>
 
-        <div class="container" id = "estudianteContainer">
-            <div>
-                <h4>Datos del estudiante</h4>
-            </div>
-            <form id = "loginForm">
-                <div class="mb-3">
-                  <div class="mb-3">
-                    <label for="codigo" class="form-label">Codigo del estudiante</label>
-                    <input type="text" class="form-control" id="nombreEstudiante" placeholder="Digite el codigo del estudiante" required >
-                  </div>
-                </div>
-  
-                <div>
-                  <button type="button" class="btn btn-primary" id = "enviarEstudiante">Enviar</button>
-                </div>
-            </form>
+      <div>
+        <button type="button" class="btn btn-primary" id="enviarDocente">Enviar</button>
+      </div>
+    </form>
 
-            <table class = "table" id = "tablaDatosEstudiante">
-              <thead>
-                <th id="thNombreEstudiante" scope="col">Nombre docente</th>
-                <th id="thApellidoEstudiante" scope="col">Apellido docete</th>
-                <th id="thSedeEstudiante" scope="col">Sede docente</th>
-                <th id="thFecha2" scope="col">Fecha</th>
-              </thead>
-            </table>
+    <div id="tablaDatosDocente">
+      <table class="table">
+        <tbody>
+          <thead>
+            <th scope="col">Actividad</th>
+            <th scope="col">Espacio</th>
+            <th scope="col">Deporte</th>
+            <th scope="col">No. estudiantes</th>
+          </thead>
+          <th id="thActividad" scope="col">Nombre docente</th>
+          <th id="thespacio" scope="col">Apellido docete</th>
+          <th id="thDeporte" scope="col">Sede docente</th>
+          <th id="thNEstudiantes" scope="col">Fecha</th>
+          </thead>
+        </tbody>
+      </table>
+      <h1>Elementos: </h1>
+      <div id="elementos_mostrados">
+      </div>
+      <button class="btn btn-primary" id="enviarEle">Enviar elementos</button>
+    </div>
+  </div>
+
+  <div class="container" id="estudianteContainer">
+    <div>
+      <h4>Datos del estudiante</h4>
+    </div>
+    <form id="loginForm">
+      <div class="mb-3">
+        <div class="mb-3">
+          <label for="codigo" class="form-label">Codigo del estudiante</label>
+          <input type="text" class="form-control" id="nombreEstudiante" placeholder="Digite el codigo del estudiante"
+            required>
         </div>
+      </div>
 
-        <div class="container" id = "miembroEquipoContainer">
-            <div>
-                <h4>Datos del estudiante</h4>
-            </div>
-            <form id = "loginForm">
-                <div class="mb-3">
-                  <div class="mb-3">
-                    <label for="codigo" class="form-label">Codigo del estudiante</label>
-                    <input type="text" class="form-control" id="codigoEstudiante" placeholder="Digite el codigo del estudiante" required >
-                  </div>
-                </div>
+      <div>
+        <button type="button" class="btn btn-primary" id="enviarEstudiante">Enviar</button>
+      </div>
+    </form>
 
-                <div class="mb-3">
-                    <div class="mb-3">
-                      <label for="codigo" class="form-label">Equipo</label>
-                      <input type="text" class="form-control" id="nombreEquipo" placeholder="Digite el codigo del equipo" required >
-                    </div>
-                </div>
-  
-                <div>
-                  <button type="button" class="btn btn-primary" id = "enviarEquipo">Enviar</button>
-                </div>
-              </form>
+    <div id="tablaDatosEstudiante">
 
-              <table class = "table" id = "tablaDatosEquipo">
-                <thead>
-                  <th id="thNombreEquipo" scope="col">Nombre equipo</th>
-                  <th id="thApellidoEquipo" scope="col">Apellido equipo</th>
-                  <th id="thSedeEquipo" scope="col">Sede equipo</th>
-                  <th id="thFecha3" scope="col">Fecha</th>
-                </thead>
-              </table>
-          </div>
+      <table class="table">
+        <thead>
+          <th scope="col">Actividad</th>
+          <th scope="col">Nombre Pasante</th>
+          <th scope="col">Apellido Pasante</th>
+          <th scope="col">Deporte</th>
+          <th scope="col">Espacio</th>
+          <th scope="col">No. estudiantes</th>
+        </thead>
+        <tbody>
+          <th id="thActividadEstudiante" scope="col">Actividad</th>
+          <th id="thNombreEstudiante" scope="col">Nombre Pasante</th>
+          <th id="thApellidoEstudiante" scope="col">Apellido Pasante</th>
+          <th id="thDeporteEstudiante" scope="col">Deporte</th>
+          <th id="thEspacioEstudiante" scope="col">Espacio</th>
+          <th id="thNumEstudiante" scope="col">Estudiantes</th>
+        </tbody>
+      </table>
+      <div id="elementos_mostradosAux">
+      </div>
+      <button class="btn btn-primary" id="enviarEleAux">Enviar elementos</button>
+    </div>
+  </div>
+
+  <div class="container" id="miembroEquipoContainer">
+    <div>
+      <h4>Datos del estudiante</h4>
+    </div>
+    <form id="loginForm">
+      <div class="mb-3">
+        <div class="mb-3">
+          <label for="codigo" class="form-label">Codigo del estudiante</label>
+          <input type="text" class="form-control" id="codigoEstudiante" placeholder="Digite el codigo del estudiante"
+            required>
         </div>
+      </div>
 
-        <script src="logicaAuxiliar.js"></script>
-    </body>
+      <div class="mb-3">
+        <div class="mb-3">
+          <label for="codigo" class="form-label">Equipo</label>
+          <input type="text" class="form-control" id="nombreEquipo" placeholder="Digite el codigo del equipo" required>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" class="btn btn-primary" id="enviarEquipo">Enviar</button>
+      </div>
+    </form>
+
+    <table class="table" id="tablaDatosEquipo">
+      <thead>
+        <th scope="col">Nombre</th>
+        <th scope="col">Apellido</th>
+        <th scope="col">Sede equipo</th>
+        <th scope="col">Equipo</th>
+      </thead>
+      <tbody>
+        <th id="thNombreEquipo" scope="col">Nombre equipo</th>
+        <th id="thApellidoEquipo" scope="col">Apellido equipo</th>
+        <th id="thSedeEquipo" scope="col">Sede equipo</th>
+        <th id="thEquipo" scope="col">Equipo</th>
+      </tbody>
+    </table>
+  </div>
+  </div>
+
+  <script src="logicaAuxiliar.js"></script>
+</body>
+
 </html>

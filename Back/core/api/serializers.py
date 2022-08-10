@@ -149,15 +149,11 @@ class ResponsableSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class AsistenresponsableSerializer(serializers.ModelSerializer):
-    concecres = ResponsableSerializer()
     class Meta:
         model = Asistenresponsable
         fields = '__all__'
 
 class AsismiembroequipoSerializer(serializers.ModelSerializer):
-    conseequipo = EquipoSerializer()
-    itemmiembro = MiembroequipoSerializer()
-    
     class Meta:
         model = Asismiembroequipo
         fields = '__all__'
@@ -170,12 +166,22 @@ class ElemendeportivoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Elemendeportivo
         fields = '__all__'
+
+class ElemendeportivoSerializerSinRef(serializers.ModelSerializer):
+    class Meta:
+        model = Elemendeportivo
+        fields = '__all__'
         
 class PrestamoSerializer(serializers.ModelSerializer):
     consecelemento = ElemendeportivoSerializer()
     consecprogramacion = ProgramacionSerializer()
     concecres = AsistenresponsableSerializer()
     consecasisres = AsistenresponsableSerializer()
+    class Meta:
+        model = Prestamo
+        fields = '__all__'
+
+class PrestamoSerializerSinRef(serializers.ModelSerializer):
     class Meta:
         model = Prestamo
         fields = '__all__'

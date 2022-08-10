@@ -2,7 +2,7 @@ var mostrado = true;
 
 function listarPersonal() {
     $.ajax({
-        url: "http://localhost:8081/personal",
+        url: "http://localhost:8000/personal",
         type: 'GET',
         dataType: 'json',
         success: function (res) {
@@ -45,7 +45,7 @@ function listarPersonal() {
 function consultarSedes() {
     $.ajax({
         type: 'get',
-        url: 'http://localhost:8081/leerSedes',
+        url: 'http://localhost:8000/leerSedes',
         dataType: 'json',
         success: function (res) {
             var opciones = "<option selected disabled value='0'>Elija la sede donde operara el empleado</option>";
@@ -61,7 +61,7 @@ function consultarSedes() {
 function consultarCargos() {
     $.ajax({
         type: 'get',
-        url: 'http://localhost:8081/leerCargos',
+        url: 'http://localhost:8000/leerCargos',
         dataType: 'json',
         success: function (res) {
             var opciones = "<option selected disabled value='0'>Elija el rol del empleado</option>";
@@ -77,7 +77,7 @@ function consultarCargos() {
 function consultarJefes() {
     $.ajax({
         type: 'get',
-        url: 'http://localhost:8081/personal',
+        url: 'http://localhost:8000/personal',
         dataType: 'json',
         success: function (res) {
             var opciones = "<option selected disabled value='0'>Elija el jefe corresponiente</option>";
@@ -97,7 +97,7 @@ function consultarPersonas(idPersona) {
     }
     $.ajax({
         async: false,
-        url: "http://localhost:8081/personas/" + idPersona,
+        url: "http://localhost:8000/personas/" + idPersona,
         type: 'GET',
         dataType: 'json',
         success: function (res) {
@@ -118,7 +118,7 @@ function consultarPersonal(idPersonal) {
     }
     $.ajax({
         async: false,
-        url: "http://localhost:8081/personal/" + idPersonal,
+        url: "http://localhost:8000/personal/" + idPersonal,
         type: 'GET',
         dataType: 'json',
         success: function (res) {
@@ -135,7 +135,7 @@ function consultarPersonal(idPersonal) {
 function IngresarPersonas(idPersona, nombre, apellido) {
     $.ajax({
         async: false,
-        url: "http://localhost:8081/personas",
+        url: "http://localhost:8000/personas",
         type: 'POST',
         contentType: "application/json; charset=utf-8",
         dataType: 'json',
@@ -189,7 +189,7 @@ function IngresarPersonal(idPersonal, idPersona, cargo, sede, idjefe) {
     }
     $.ajax({
         async: false,
-        url: "http://localhost:8081/personal",
+        url: "http://localhost:8000/personal",
         type: 'POST',
         contentType: "application/json; charset=utf-8",
         dataType: 'json',
@@ -208,7 +208,7 @@ function IngresarPersonal(idPersonal, idPersona, cargo, sede, idjefe) {
 function ActualizarPersona(idPersona, nombre, apellido) {
     $.ajax({
         async: false,
-        url: "http://localhost:8081/personas",
+        url: "http://localhost:8000/personas",
         type: 'PUT',
         contentType: "application/json; charset=utf-8",
         dataType: 'json',
@@ -261,7 +261,7 @@ function ActualizarPersonal(idPersonal, idPersona, cargo, sede, idjefe) {
     }
     $.ajax({
         async: false,
-        url: "http://localhost:8081/personal",
+        url: "http://localhost:8000/personal",
         type: 'PUT',
         contentType: "application/json; charset=utf-8",
         dataType: 'json',
