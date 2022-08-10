@@ -37,6 +37,12 @@ def asisMiembroEquipo_api_view(request):
         asismiembro = Asismiembroequipo.objects.all()
         asismiembro_serializer = AsismiembroequipoSerializer(asismiembro, many = True)
         return Response(asismiembro_serializer.data)
+    elif request.method == 'POST':
+        asismiembro_serializer = AsismiembroequipoSerializer(data=request.data)
+        if asismiembro_serializer.is_valid():
+            asismiembro_serializer.save()
+            return Response(asismiembro_serializer.data)
+        return Response(asismiembro_serializer.errors)
         
 @api_view(['GET', 'POST'])
 def asistenResponsable_api_view(request):
@@ -86,7 +92,7 @@ def elemenDeportivo_api_view(request):
         elemendeportivo = Elemendeportivo.objects.all()
         elemendeportivo_serializer = ElemendeportivoSerializer(elemendeportivo, many = True)
         return Response(elemendeportivo_serializer.data)
-        
+
 @api_view(['GET', 'POST'])
 def elemento_api_view(request):
     if request.method == 'GET':
