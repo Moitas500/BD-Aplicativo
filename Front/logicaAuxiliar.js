@@ -63,8 +63,6 @@ function mostrarDatos(){
     document.getElementById("fecha-hora").innerHTML = '<b>Fecha actual:</b> ' + now;
     document.getElementById("nombreAuxiliar").innerHTML = '<b>Empleado:</b> ' + nombre + " " +apellido;
     document.getElementById("sedeAuxiliar").innerHTML = '<b>Sede:</b> ' + sede;
-
-    console.log(empleados);
 }
 
 function añadirListener(){
@@ -245,6 +243,8 @@ function asistenciaMiembroEquipo(miembroEquipo){
     var programacion;
     var hora  = now.split(',');
     hora = hora[1].split(' ');
+    hora = hora[1].split(':');
+    var i = 0;
 
     document.getElementById("thNombreEquipo").textContent = nombreEquipo;
     document.getElementById("thApellidoEquipo").textContent = apellidoEquipo;
@@ -261,11 +261,62 @@ function asistenciaMiembroEquipo(miembroEquipo){
         },
     })
 
+    while(i < programacion.length){
+        var prog = programacion[i];
+
+        if(prog.iddeporte.iddeporte == miembroEquipo[0].conseequipo.iddeporte.iddeporte){
+            var horaIni = prog.idhora_ini;
+            var horaFin = prog.idhora_fin;
+            horaIni = horaIni.split(':');
+            horaFin = horaFin.split(':');
+
+            if((parseInt(horaIni[0])-1) == parseInt(hora[0])){
+                var diferencia = 60 - parseInt(hora[1]);
+
+                if(diferencia <= 15){
+                    registrarAsistenciaMiembroEquipo(miembroEquipo, prog);
+                }else{
+                    alert("No se puede registrar la asistencia");
+                }
+            }else if(parseInt(horaIni[0]) == 6){
+                var diferencia = 60 - parseInt(hora[1]);
+
+                if(diferencia >=45){
+                    registrarAsistenciaMiembroEquipo(miembroEquipo, prog);
+                }else{
+                    alert("No se puede registrar la asistencia");
+                }
+            }
+
+            break;
+        }
+
+        i++;
+    }
+
     $("#tablaDatosEquipo").show();
 }
 
+function registrarAsistenciaMiembroEquipo(miembroEquipo, programacion){
+    $.ajax({
+        async: false,
+        url: "http://localhost:8081/asistenciaMiembro/",
+        type: 'POST',
+        dataType: 'json',
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify({
+            "consecprogramacion": programacion.consecprogramacion,
+            "conmiembroequipo": 1,
+            "conseequipo": miembroEquipo[0].conseequipo.conseequipo,
+            "itemmiembro": miembroEquipo[0].itemmiembro,
+        }),
+        success: function () {
+            console.log("enviado")
+        },
+    })
+}
+
 function asistenteDocente(empleado){
-    console.log(empleado)
     var nombreDocente  = empleado.codempleado.nomempleado;
     var apellidoDocente = empleado.codempleado.apelempleado;
     var sedeDocente = empleado.codespacio.nomespacio;
@@ -285,8 +336,26 @@ function asistenteDocente(empleado){
 
     responsable.forEach(res => {
         console.log(res)
+        var horaIni = res.consecprogramacion.idhora_ini;
+        var horaFin = res.consecprogramacion.idhora_fin;
 
-        // de aquie verificar si la fecha actual esta en el rango de inicio y fin
+        if((parseInt(horaIni[0])) == parseInt(hora[0])){
+            var diferencia = 60 - parseInt(hora[1]);
+
+            if(diferencia <= 15){
+                //Aqui devuelve todo
+            }else{
+                alert("No se puede realizar el procedimiento");
+            }
+        }else if(parseInt(horaIni[0]) == 9){
+            var diferencia = 60 - parseInt(hora[1]);
+
+            if(diferencia >=45){
+                //Aqui devuelve todo
+            }else{
+                alert("No se puede realizar el procedimiento");
+            }
+        }
     });
 
     $("#tablaDatosDocente").show();
@@ -300,12 +369,15 @@ function asistenciaPasante(estudiante){
     var now = today.toLocaleString();
     var programacion;
     var hora  = now.split(',');
+    var responsable;
     hora = hora[1].split(' ');
 
     document.getElementById("thNombreEstudiante").textContent = nombre;
     document.getElementById("thApellidoEstudiante").textContent = apellido;
     document.getElementById("thSedeEstudiante").textContent = sede;
     document.getElementById("thFecha2").textContent = now;
+
+    responsable = ResponsableEmpleado(empleado.codempleado.codempleado)
 
     $.ajax({
         async: false,
@@ -316,6 +388,30 @@ function asistenciaPasante(estudiante){
             programacion = res
         },
     })
+
+    responsable.forEach(res => {
+        console.log(res)
+        var horaIni = res.consecprogramacion.idhora_ini;
+        var horaFin = res.consecprogramacion.idhora_fin;
+
+        if((parseInt(horaIni[0])) == parseInt(hora[0])){
+            var diferencia = 60 - parseInt(hora[1]);
+
+            if(diferencia <= 15){
+                //Aqui devuelve todo
+            }else{
+                alert("No se puede realizar el procedimiento");
+            }
+        }else if(parseInt(horaIni[0]) == 9){
+            var diferencia = 60 - parseInt(hora[1]);
+
+            if(diferencia >=45){
+                //Aqui devuelve todo
+            }else{
+                alert("No se puede realizar el procedimiento");
+            }
+        }
+    });
 
     $("#tablaDatosEstudiante").show();
 }
