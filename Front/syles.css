@@ -9,3 +9,14 @@
 #tablaDatosDocente, #tablaDatosEstudiante, #tablaDatosEquipo{
     margin-top: 50px;
 }
+
+.grid_3column{
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+label{
+    margin-left: 5px;
+}
+.btn{
+    margin: 10px;
+}

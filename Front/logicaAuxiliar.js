@@ -69,7 +69,11 @@ function añadirListener() {
     var btnAsistDocente = document.getElementById("asistDocenteBoton");
     btnAsistDocente.addEventListener("click", function () {
         if (!mostrado) {
+            
+           
+
             $("#docenteContainer").show();
+            
             mostrado = true;
         } else {
             $("#miembroEquipoContainer").hide();
@@ -86,6 +90,7 @@ function añadirListener() {
     var btnAsistPasante = document.getElementById("asistPasanteBoton");
     btnAsistPasante.addEventListener("click", function () {
         if (!mostrado) {
+          
             $("#estudianteContainer").show();
             mostrado = true;
         } else {
@@ -363,7 +368,85 @@ function asistenteDocente(empleado) {
         // if ((parseInt(horaIni[0])) <= parseInt(hora[0]) && (parseInt(horaFin[0])) >= parseInt(hora[0])) {
         if ((parseInt(horaIni[0])) <= 11 && (parseInt(horaFin[0])) >= 11) {
             registrarAsistenciaDocente(res)
-            bandera = true
+            bandera = true;
+
+
+
+            //---------------------------------------------------------------------------------------------------
+            var elementos=[
+               
+                {
+                    "consecelemento": 7,
+                    "idestado": {
+                        "idestado": "1",
+                        "descestado": "Activo"
+                    },
+                    "idtipoelemento": {
+                        "idtipoelemento": "8",
+                        "desctipoelemento": "Guantes Box Especial"
+                    },
+                    "idmarca": {
+                        "idmarca": "70",
+                        "nommarca": "Kappa"
+                    },
+                    "codespacio": {
+                        "codespacio": "21",
+                        "esp_codespacio": {
+                            "codespacio": "2",
+                            "nomespacio": "Sede de ingenieria",
+                            "esp_codespacio": null,
+                            "idtipoespacio": "2"
+                        },
+                        "idtipoespacio": {
+                            "idtipoespacio": "5",
+                            "desctipoespacio": "Salon"
+                        },
+                        "nomespacio": "Salon I-601"
+                    },
+                    "fecharegistro": "2017-08-02"
+                }
+            ]
+            
+            var divElement= document.getElementById("elementos_mostrados");
+            for(i=0; i<Object.keys(elementos).length;i++){ 
+
+                if(elementos[i].idestado.idestado == "1"){
+                    
+                    var divCheck=document.createElement("div");
+                    divElement.classList.add("grid_3column");
+                    var check_element= document.createElement("input");
+                     // Assigning the attributes
+                     // to created checkbox
+                    check_element.type = "checkbox";
+                    check_element.classList.add("form-check-input");
+                    check_element.name = "elemento";
+                    check_element.value =  elementos[i].consecelemento;
+                    check_element.id = elementos[i].consecelemento+"-"+elementos[i].idtipoelemento.desctipoelemento;
+                
+    
+                    // creating label for checkbox
+                    var label = document.createElement('label');
+                    label.appendChild(document.createTextNode(" "+ elementos[i].idtipoelemento.desctipoelemento));
+                    divCheck.appendChild(check_element);
+                    divCheck.appendChild(label);
+                    divElement.appendChild(divCheck);
+                }   
+                
+                console.log(elementos[i].idtipoelemento.desctipoelemento);
+            }
+            
+            var BtnElement= document.getElementById("enviarEle");
+            BtnElement.addEventListener("click", function(){
+                var Elements=document.querySelectorAll('input[name=elemento]:checked')
+                console.log(Array.from(Elements).map(checkbox => checkbox.value));
+            });
+            
+            //---------------------------------------------------------------------------------------------------
+
+
+
+
+
             $("#tablaDatosDocente").show();
             // Comentariar
             
@@ -425,8 +508,81 @@ function asistenciaPasante(estudiante) {
                 alert("No se puede realizar el procedimiento");
             }
         }
+
+
+
+
+          //----------------------------------------------------------------------------------------------
+        var elementos=[
+            {
+                "consecelemento": 7,
+                "idestado": {
+                    "idestado": "1",
+                    "descestado": "Activo"
+                },
+                "idtipoelemento": {
+                    "idtipoelemento": "8",
+                    "desctipoelemento": "Guantes Box Especial"
+                },
+                "idmarca": {
+                    "idmarca": "70",
+                    "nommarca": "Kappa"
+                },
+                "codespacio": {
+                    "codespacio": "21",
+                    "esp_codespacio": {
+                        "codespacio": "2",
+                        "nomespacio": "Sede de ingenieria",
+                        "esp_codespacio": null,
+                        "idtipoespacio": "2"
+                    },
+                    "idtipoespacio": {
+                        "idtipoespacio": "5",
+                        "desctipoespacio": "Salon"
+                    },
+                    "nomespacio": "Salon I-601"
+                },
+                "fecharegistro": "2017-08-02"
+            }
+        ]
+        
+        var divElement= document.getElementById("elementos_mostradosAux");
+        for(i=0; i<Object.keys(elementos).length;i++){ 
+
+            if(elementos[i].idestado.idestado == "1"){
+                
+                var divCheck=document.createElement("div");
+                divElement.classList.add("grid_3column");
+                var check_element= document.createElement("input");
+                 // Assigning the attributes
+                 // to created checkbox
+                check_element.type = "checkbox";
+                check_element.classList.add("form-check-input");
+                check_element.name = "elemento";
+                check_element.value =  elementos[i].consecelemento;
+                check_element.id = elementos[i].consecelemento+"-"+elementos[i].idtipoelemento.desctipoelemento;
+            
+
+                // creating label for checkbox
+                var label = document.createElement('label');
+                label.appendChild(document.createTextNode(" "+ elementos[i].idtipoelemento.desctipoelemento));
+                divCheck.appendChild(check_element);
+                divCheck.appendChild(label);
+                divElement.appendChild(divCheck);
+            }   
+            
+            console.log(elementos[i].idtipoelemento.desctipoelemento);
+        }
+        
+        var BtnElement= document.getElementById("enviarEleAux");
+        BtnElement.addEventListener("click", function(){
+            var Elements=document.querySelectorAll('input[name=elemento]:checked')
+            console.log(Array.from(Elements).map(checkbox => checkbox.value));
+        });
     });
 
+        //---------------------------------------------------------------------------------------------
+        
     $("#tablaDatosEstudiante").show();
 }
 
