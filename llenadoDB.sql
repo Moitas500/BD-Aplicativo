@@ -62,15 +62,15 @@ INSERT ALL
 SELECT * FROM dual;
 
 INSERT ALL
-    INTO deporete_TipoElemento(IDTIPOELEMENTO, IDDEPORTE) VALUES ('2', '6')
-    INTO deporete_TipoElemento(IDTIPOELEMENTO, IDDEPORTE) VALUES ('4', '3')
-    INTO deporete_TipoElemento(IDTIPOELEMENTO, IDDEPORTE) VALUES ('6', '1')
-    INTO deporete_TipoElemento(IDTIPOELEMENTO, IDDEPORTE) VALUES ('7', '1')
-    INTO deporete_TipoElemento(IDTIPOELEMENTO, IDDEPORTE) VALUES ('8', '10')
-    INTO deporete_TipoElemento(IDTIPOELEMENTO, IDDEPORTE) VALUES ('10', '10')
-    INTO deporete_TipoElemento(IDTIPOELEMENTO, IDDEPORTE) VALUES ('11', '9')
-    INTO deporete_TipoElemento(IDTIPOELEMENTO, IDDEPORTE) VALUES ('12', '10')
-    INTO deporete_TipoElemento(IDTIPOELEMENTO, IDDEPORTE) VALUES ('13', '3')
+    INTO deporte_TipoElemento(IDTIPOELEMENTO, IDDEPORTE) VALUES ('2', '6')
+    INTO deporte_TipoElemento(IDTIPOELEMENTO, IDDEPORTE) VALUES ('4', '3')
+    INTO deporte_TipoElemento(IDTIPOELEMENTO, IDDEPORTE) VALUES ('6', '1')
+    INTO deporte_TipoElemento(IDTIPOELEMENTO, IDDEPORTE) VALUES ('7', '1')
+    INTO deporte_TipoElemento(IDTIPOELEMENTO, IDDEPORTE) VALUES ('8', '10')
+    INTO deporte_TipoElemento(IDTIPOELEMENTO, IDDEPORTE) VALUES ('10', '10')
+    INTO deporte_TipoElemento(IDTIPOELEMENTO, IDDEPORTE) VALUES ('11', '9')
+    INTO deporte_TipoElemento(IDTIPOELEMENTO, IDDEPORTE) VALUES ('12', '10')
+    INTO deporte_TipoElemento(IDTIPOELEMENTO, IDDEPORTE) VALUES ('13', '3')
 SELECT * FROM dual;
 
 INSERT ALL

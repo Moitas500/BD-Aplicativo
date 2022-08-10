@@ -1,3 +1,4 @@
+from datetime import date, datetime
 from urllib import request
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -61,8 +62,8 @@ def deporte_api_view(request):
 @api_view(['GET', 'POST'])
 def deporteTipoElemento_api_view(request):
     if request.method == 'GET':
-        deporteTipoelemento = Dia.objects.all()
-        deporteTipoelemento_serializer = DiaSerializer(deporteTipoelemento, many = True)
+        deporteTipoelemento = deporte_tipoelemento.objects.all()
+        deporteTipoelemento_serializer = Deporte_tipoelementoSerializer(deporteTipoelemento, many = True)
         return Response(deporteTipoelemento_serializer.data)
         
 @api_view(['GET', 'POST'])
@@ -271,12 +272,21 @@ def responsable_api_view(request):
         return Response(responsable_serializer.data)
 
 @api_view(['GET'])
-def responsable_detail_view(request, pk=None):
-
-    responsable = Responsable.objects.filter(codempleado = pk)
+def responsableDoc_detail_view(request, pk=None):
+    now = datetime.now()
+    responsable = Responsable.objects.filter(codempleado = pk, fechaini__gte=datetime(now.year, now.month, now.day))
     if responsable:
         if request.method == 'GET':
-            # responsable = Responsable.objects.all()
+            responsable_serializer = ResponsableSerializer(responsable, many = True)
+            return Response(responsable_serializer.data)
+    return Response({'message':'No se encuentra al responsable con estos datos'}, status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['GET'])
+def responsableEst_detail_view(request, pk=None):
+    now = datetime.now()
+    responsable = Responsable.objects.filter(codestudiante = pk, fechaini__gte=datetime(now.year, now.month, now.day))
+    if responsable:
+        if request.method == 'GET':
             responsable_serializer = ResponsableSerializer(responsable, many = True)
             return Response(responsable_serializer.data)
     return Response({'message':'No se encuentra al responsable con estos datos'}, status=status.HTTP_404_NOT_FOUND)

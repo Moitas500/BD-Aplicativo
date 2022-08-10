@@ -21,11 +21,7 @@ class DeporteSerializer(serializers.ModelSerializer):
         model = Deporte
         fields = '__all__'
     
-class Deporte_tipoelementoSerializer(serializers.ModelSerializer):
-    iddeporte = DeporteSerializer()
-    class Meta:
-        model = deporte_tipoelemento
-        fields = '__all__'
+
         
 class DiaSerializer(serializers.ModelSerializer):
     class Meta:
@@ -136,6 +132,13 @@ class TipoelementoSerializer(serializers.ModelSerializer):
         model = Tipoelemento
         fields = '__all__'
 
+class Deporte_tipoelementoSerializer(serializers.ModelSerializer):
+    idtipoelemento = TipoelementoSerializer()
+    iddeporte = DeporteSerializer()
+    class Meta:
+        model = deporte_tipoelemento
+        fields = '__all__'
+        
 class ResponsableSerializer(serializers.ModelSerializer):
     consecprogramacion = ProgramacionSerializer()
     idrol = RolSerializer()
